@@ -14,7 +14,7 @@ class ProfileUpdateTest extends TestCase
     {
         $this->actingAs(User::factory()->create());
 
-        $this->get('/settings/profile')->assertOk();
+        $this->get(route('settings.profile.edit'))->assertOk();
     }
 
     public function test_profile_information_can_be_updated(): void
@@ -23,14 +23,14 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->put('/settings/profile', [
+            ->put(route('settings.profile.update'), [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
             ]);
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/settings/profile');
+            ->assertRedirect(route('settings.profile.edit'));
 
         $user->refresh();
 
@@ -45,14 +45,14 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->put('/settings/profile', [
+            ->put(route('settings.profile.update'), [
                 'name' => 'Test User',
                 'email' => $user->email,
             ]);
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/settings/profile');
+            ->assertRedirect(route('settings.profile.edit'));
 
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
@@ -63,7 +63,7 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->delete('/settings/profile', [
+            ->delete(route('settings.profile.edit'), [
                 'password' => 'password',
             ]);
 
@@ -81,14 +81,14 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->from('/settings/profile')
-            ->delete('/settings/profile', [
+            ->from(route('settings.profile.edit'))
+            ->delete(route('settings.profile.edit'), [
                 'password' => 'wrong-password',
             ]);
 
         $response
             ->assertSessionHasErrors('password')
-            ->assertRedirect('/settings/profile');
+            ->assertRedirect(route('settings.profile.edit'));
 
         $this->assertNotNull($user->fresh());
     }
