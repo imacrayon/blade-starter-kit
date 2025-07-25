@@ -9,13 +9,13 @@
                 <x-phosphor-x aria-hidden="true" width="20" height="20" />
             </x-sidebar.toggle>
 
-            <a href="{{ route('dashboard') }}" class="mr-5 flex items-center space-x-2">
+            <a href="{{ route('app') }}" class="mr-5 flex items-center space-x-2">
                 <x-app-logo />
             </a>
 
             <x-navlist>
                 <x-navlist.group :heading="__('Platform')">
-                    <x-navlist.item before="phosphor-house-line" :href="route('dashboard')" :current="request()->routeIs('dashboard')">
+                    <x-navlist.item before="phosphor-house-line" href="{{ route('app') }}" :current="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-navlist.item>
                 </x-navlist.group>

@@ -10,12 +10,12 @@
                     <x-phosphor-list aria-hidden="true" width="20" height="20" />
                 </x-sidebar.toggle>
 
-                <a href="{{ route('dashboard') }}" class="ml-2 mr-5 flex items-center space-x-2 lg:ml-0">
+                <a href="{{ route('app') }}" class="ml-2 mr-5 flex items-center space-x-2 lg:ml-0">
                     <x-app-logo />
                 </a>
 
                 <x-navbar class="-mb-px max-lg:hidden">
-                    <x-navbar.item before="phosphor-house-line" :href="route('dashboard')" :current="request()->routeIs('dashboard')">
+                    <x-navbar.item before="phosphor-house-line" href="{{ route('app') }}" :current="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-navbar.item>
                 </x-navbar>
@@ -73,13 +73,13 @@
                 <x-phosphor-x aria-hidden="true" width="20" height="20" />
             </x-sidebar.toggle>
 
-            <a href="{{ route('dashboard') }}" class="ml-1 flex items-center space-x-2">
+            <a href="{{ route('app') }}" class="ml-1 flex items-center space-x-2">
                 <x-app-logo />
             </a>
 
             <x-navlist>
                 <x-navlist.group :heading="__('Platform')">
-                    <x-navlist.item before="phosphor-squares-four" :href="route('dashboard')" :current="request()->routeIs('dashboard')">
+                    <x-navlist.item before="phosphor-squares-four" href="{{ route('app') }}" :current="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                     </x-navlist.item>
                 </x-navlist.group>

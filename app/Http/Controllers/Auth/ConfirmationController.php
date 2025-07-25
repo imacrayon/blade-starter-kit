@@ -29,6 +29,6 @@ class ConfirmationController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('app', absolute: false));
     }
 }
