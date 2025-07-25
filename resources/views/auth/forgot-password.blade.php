@@ -20,7 +20,7 @@
 
     <div class="text-center text-sm text-gray-600 dark:text-gray-400">
         Or, return to
-        <x-link :href="route('login')">log in</x-link>
+        <x-link href="{{ route('login') }}">log in</x-link>
     </div>
 </div>
 </x-layouts.auth>

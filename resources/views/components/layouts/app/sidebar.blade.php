@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <x-popover.separator />
-                    <x-popover.item before="phosphor-gear-fine" href="/settings/profile">{{ __('Settings') }}</x-popover.item>
+                    <x-popover.item before="phosphor-gear-fine" href="{{ route('settings.profile.edit') }}">{{ __('Settings') }}</x-popover.item>
                     <x-popover.separator />
                     <x-form method="post" action="{{ route('logout') }}" class="w-full flex">
                         <x-popover.item before="phosphor-sign-out">{{ __('Log Out') }}</x-popover.item>
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <x-popover.separator />
-                        <x-popover.item before="phosphor-gear-fine" href="/settings/profile">{{ __('Settings') }}</x-popover.item>
+                        <x-popover.item before="phosphor-gear-fine" href="{{ route('settings.profile.edit') }}">{{ __('Settings') }}</x-popover.item>
                         <x-popover.separator />
                         <x-form method="post" action="{{ route('logout') }}" class="w-full flex">
                             <x-popover.item before="phosphor-sign-out">{{ __('Log Out') }}</x-popover.item>

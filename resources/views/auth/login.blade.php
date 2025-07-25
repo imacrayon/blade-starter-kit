@@ -25,7 +25,7 @@
             />
 
             @if (Route::has('password.request'))
-                <x-link class="absolute right-0 top-0 text-sm" :href="route('password.request')">
+                <x-link class="absolute right-0 top-0 text-sm" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </x-link>
             @endif
@@ -39,7 +39,7 @@
     @if (Route::has('register'))
       <p class="text-center text-sm text-gray-600 dark:text-gray-400">
           <span>{{ __('Don\'t have an account?') }}</span>
-          <x-link :href="route('register')">Sign up</x-link>
+          <x-link href="{{ route('register') }}">Sign up</x-link>
       </p>
     @endif
 </div>
