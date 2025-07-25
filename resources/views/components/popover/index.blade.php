@@ -1,6 +1,6 @@
 @props([
     'justify' => 'right',
-    'align' => 'end',
+    'align' => 'top',
 ])
 
 @php
