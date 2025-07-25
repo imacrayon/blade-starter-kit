@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-class Textarea extends FormControl
+class Textarea extends Control
 {
     public function render()
     {

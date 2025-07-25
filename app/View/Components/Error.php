@@ -17,7 +17,7 @@ class Error extends Component
     public function __construct($for, $value = null, $bag = 'default')
     {
         $this->id = $for.'_error';
-        $this->for = FormControl::sessionPath($for);
+        $this->for = Control::sessionPath($for);
         $this->value = $value;
         $this->bag = $bag;
     }

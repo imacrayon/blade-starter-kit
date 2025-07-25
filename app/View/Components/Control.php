@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\View\Component;
 
-abstract class FormControl extends Component
+abstract class Control extends Component
 {
     public $id;
 
@@ -15,20 +15,25 @@ abstract class FormControl extends Component
 
     public $label;
 
-    public $formControlAttributes;
+    public $description;
 
-    public function __construct($name, $id = null, $value = '', $label = '', $bag = 'default')
+    public $controlAttributes;
+
+    public function __construct($name, $id = null, $value = '', $label = '', $description = '', $bag = 'default')
     {
         $sessionPath = self::sessionPath($name);
         $this->value = old($sessionPath, $value);
         $this->label = $label;
+        $this->description = $description;
         $this->id = $id ?? $name;
-        $this->formControlAttributes = $this->newAttributeBag([
+        $this->controlAttributes = $this->newAttributeBag([
             'name' => $name,
             'id' => $this->id,
-        ])->when($this->errorBag($bag)->has($sessionPath), function ($attributes) use ($name) {
+        ])->when($this->errorBag($bag)->has($sessionPath), function ($attributes) {
             $attributes->offsetSet('aria-invalid', 'true');
-            $attributes->offsetSet('aria-describedby', $attributes->prepends($name.'_error'));
+            $attributes->offsetSet('aria-describedby', $attributes->prepends($this->id.'_error'));
+        })->when($this->description, function ($attributes) {
+            $attributes->offsetSet('aria-describedby', $attributes->prepends($this->id.'_description'));
         });
     }
 

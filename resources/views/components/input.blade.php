@@ -19,12 +19,6 @@ $classes = [
 ];
 @endphp
 
-<?php if ($label): ?>
-<x-field>
-    <x-label :for="$id" :value="$label" />
-    <input {{ $formControlAttributes }} {{ $attributes->class($classes) }} value="{{ $value }}">
-    <x-error :for="$id" />
-</x-field>
-<?php else: ?>
-<input {{ $formControlAttributes }} {{ $attributes->class($classes) }} value="{{ $value }}">
-<?php endif; ?>
+<x-has-field>
+<input {{ $controlAttributes }} {{ $attributes->class($classes) }} value="{{ $value }}">
+</x-has-field>

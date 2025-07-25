@@ -2,14 +2,12 @@
 
 namespace App\View\Components;
 
-class Input extends FormControl
+class Input extends Control
 {
-    public $checked;
-
-    public function __construct($name, $id = null, $value = '', $label = '', $bag = 'default', $type = 'text')
+    public function __construct($name, $id = null, $value = '', $label = '', $description = '', $bag = 'default', $type = 'text')
     {
-        parent::__construct($name, $id, $value, $label, $bag);
-        $this->formControlAttributes = $this->formControlAttributes->merge(['type' => $type]);
+        parent::__construct($name, $id, $value, $label, $description, $bag);
+        $this->controlAttributes = $this->controlAttributes->merge(['type' => $type]);
     }
 
     public function render()
