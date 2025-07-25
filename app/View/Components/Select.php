@@ -20,11 +20,7 @@ class Select extends Control
 
     public function isSelected($option): bool
     {
-        if (is_array($this->value)) {
-            return in_array($option, $this->value);
-        }
-
-        return (string) $option === (string) $this->value;
+        return collect($this->value)->contains($option);
     }
 
     public function render()
