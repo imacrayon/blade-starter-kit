@@ -1,7 +1,4 @@
 <x-layouts.app :title="__('Profile | Settings')">
-<section class="w-full">
-    @include('partials.settings-heading')
-
     <x-settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
         <x-form method="put" action="{{ route('settings.profile.update') }}" class="my-6 w-full space-y-6">
             <x-input type="text" :label="__('Name')" :value="$user->name" name="name" required autofocus autocomplete="name" />
@@ -41,8 +38,8 @@
 
         <section class="mt-10 space-y-6">
             <div class="relative mb-5">
-                <x-heading>{{ __('Delete account') }}</x-heading>
-                <x-subheading>{{ __('Delete your account and all of its resources') }}</x-subheading>
+                <x-heading size="lg">{{ __('Delete account') }}</x-heading>
+                <x-subheading size="lg">{{ __('Delete your account and all of its resources') }}</x-subheading>
             </div>
 
             <x-button type="button" variant="danger" x-init="" x-on:click="$dispatch('modal:open', 'confirm_user_deletion')">
@@ -68,5 +65,4 @@
             </x-modal>
         </section>
     </x-settings.layout>
-</section>
 </x-layouts.app>

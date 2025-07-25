@@ -1,7 +1,4 @@
 <x-layouts.app :title="__('Appearance | Settings')">
-<div class="flex flex-col items-start">
-    @include('partials.settings-heading')
-
     <x-settings.layout :heading="__('Appearance')" :subheading=" __('Update the appearance settings for your account')">
         <fieldset>
             <legend class="sr-only">Appearance</legend>
@@ -12,5 +9,4 @@
             </x-button.group>
         </fieldset>
     </x-settings.layout>
-</div>
 </x-layouts.app>
