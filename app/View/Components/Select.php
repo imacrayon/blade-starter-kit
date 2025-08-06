@@ -15,6 +15,9 @@ class Select extends Control
         parent::__construct($name, $id, $value, $label, $description, $bag);
         $this->placeholder = $placeholder;
         $this->multiple = $multiple;
+        if (is_string($options) && enum_exists($options)) {
+            $options = array_map(fn ($case) => $case->label(), array_column($options::cases(), null, 'value'));
+        }
         $this->options = $options;
     }
 
