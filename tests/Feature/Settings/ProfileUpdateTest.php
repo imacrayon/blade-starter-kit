@@ -12,7 +12,7 @@ class ProfileUpdateTest extends TestCase
 
     public function test_profile_page_is_displayed(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->be(User::factory()->create());
 
         $this->get(route('settings.profile.edit'))->assertOk();
     }
@@ -22,7 +22,7 @@ class ProfileUpdateTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this
-            ->actingAs($user)
+            ->be($user)
             ->put(route('settings.profile.update'), [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
@@ -44,7 +44,7 @@ class ProfileUpdateTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this
-            ->actingAs($user)
+            ->be($user)
             ->put(route('settings.profile.update'), [
                 'name' => 'Test User',
                 'email' => $user->email,
@@ -62,7 +62,7 @@ class ProfileUpdateTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this
-            ->actingAs($user)
+            ->be($user)
             ->delete(route('settings.profile.edit'), [
                 'password' => 'password',
             ]);
@@ -80,15 +80,14 @@ class ProfileUpdateTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this
-            ->actingAs($user)
-            ->from(route('settings.profile.edit'))
+            ->be($user)
             ->delete(route('settings.profile.edit'), [
                 'password' => 'wrong-password',
             ]);
 
         $response
             ->assertSessionHasErrors('password')
-            ->assertRedirect(route('settings.profile.edit'));
+            ->assertRedirectBack();
 
         $this->assertNotNull($user->fresh());
     }

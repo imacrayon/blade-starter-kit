@@ -17,7 +17,7 @@ class AppTest extends TestCase
 
     public function test_authenticated_users_can_visit_the_dashboard(): void
     {
-        $this->actingAs($user = User::factory()->create());
+        $this->be($user = User::factory()->create());
 
         $this->get(route('app'))->assertStatus(200);
     }

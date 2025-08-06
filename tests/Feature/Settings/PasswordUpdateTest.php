@@ -16,8 +16,7 @@ class PasswordUpdateTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this
-            ->actingAs($user)
-            ->from(route('settings.password.edit'))
+            ->be($user)
             ->put(route('settings.password.update'), [
                 'current_password' => 'password',
                 'password' => 'new-password',
@@ -26,7 +25,7 @@ class PasswordUpdateTest extends TestCase
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect(route('settings.password.edit'));
+            ->assertRedirectBack();
 
         $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
     }
@@ -36,8 +35,7 @@ class PasswordUpdateTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this
-            ->actingAs($user)
-            ->from(route('settings.password.edit'))
+            ->be($user)
             ->put(route('settings.password.update'), [
                 'current_password' => 'wrong-password',
                 'password' => 'new-password',
@@ -46,6 +44,6 @@ class PasswordUpdateTest extends TestCase
 
         $response
             ->assertSessionHasErrors('current_password')
-            ->assertRedirect(route('settings.password.edit'));
+            ->assertRedirectBack();
     }
 }
