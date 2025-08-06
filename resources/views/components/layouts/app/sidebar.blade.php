@@ -14,24 +14,58 @@
             </a>
 
             <x-navlist>
-                <x-navlist.group :heading="__('Platform')">
-                    <x-navlist.item before="phosphor-house-line" href="{{ route('app') }}" :current="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                <x-navlist.item before="phosphor-house-line" href="{{ route('app') }}" :current="request()->routeIs('app')">
+                    {{ __('Dashboard') }}
+                </x-navlist.item>
+                <x-navlist.item before="phosphor-git-pull-request" href="https://github.com/imacrayon/blade-starter-kit" target="_blank">
+                        {{ __('Repository') }}
+                </x-navlist.item>
+            </x-navlist>
+
+            <x-separator />
+
+            <x-navlist>
+                <x-navlist.group>
+                    <x-popover justify="left">
+                        <button type="button" class="flex pl-3 h-10 w-full items-center rounded-lg text-gray-500 cursor-default hover:bg-gray-800/5 hover:text-gray-800 lg:h-8 dark:text-white/80 dark:hover:bg-white/7 dark:hover:text-white">
+                            <span class="text-sm font-medium leading-none">
+                                {{ auth()->user()->team->name }}
+                            </span>
+                            <span class="shrink-0 ml-auto size-8 flex justify-center items-center">
+                                <x-phosphor-caret-up-down aria-hidden="true" width="12" height="12" class="text-gray-400 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white" />
+                            </span>
+                        </button>
+                        <x-slot:menu class="w-max">
+                            <x-form method="put" action="{{ route('settings.team.update') }}" class="grid grid-cols-[auto_1fr]">
+                                @foreach(auth()->user()->teams as $team)
+                                    <x-popover.item class="col-span-2 grid grid-cols-subgrid" :before="$team->id === auth()->user()->team_id ? 'phosphor-check' : ''" name="team_id" value="{{ $team->id }}">{{ $team->name }}</x-popover.item>
+                                @endforeach
+                            </x-form>
+                            <x-popover.separator />
+                            <x-popover.item before="phosphor-plus" href="{{ route('teams.create') }}" :current="request()->routeIs('teams.create')">
+                                {{ __('New Team') }}
+                            </x-popover.item>
+                        </x-slot:menu>
+                    </x-popover>
+                    <x-navlist.item before="phosphor-user-list" href="{{ route('teams.show', auth()->user()->team) }}" :current="request()->routeIs('teams.show') && request()->route('team')->is(auth()->user()->team)">
+                        {{ __('Members') }}
+                    </x-navlist.item>
+                    <x-navlist.item before="phosphor-gear-fine" href="{{ route('teams.edit', auth()->user()->team) }}" :current="request()->routeIs('teams.edit') && request()->route('team')->is(auth()->user()->team)">
+                        {{ __('Settings') }}
                     </x-navlist.item>
                 </x-navlist.group>
             </x-navlist>
 
             <x-spacer />
 
-            <x-navlist>
-                <x-navlist.item before="phosphor-git-pull-request" href="https://github.com/imacrayon/blade-starter-kit" target="_blank">
-                {{ __('Repository') }}
-                </x-navlist.item>
-
-                <x-navlist.item before="phosphor-book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
-                {{ __('Documentation') }}
-                </x-navlist.item>
-            </x-navlist>
+            @can('admin')
+                <x-navlist>
+                    <x-navlist.group :heading="__('Admin')">
+                        <x-navlist.item href="{{ route('admin.users.index') }}" before="phosphor-user">{{ __('Users') }}</x-navlist.item>
+                        <x-navlist.item href="{{ route('admin.teams.index') }}" before="phosphor-users-three">{{ __('Teams') }}</x-navlist.item>
+                    </x-navlist.group>
+                </x-navlist>
+            @endcan
 
             <x-popover align="bottom" justify="left">
                 <button type="button" class="w-full group flex items-center rounded-lg p-1 hover:bg-gray-800/5 dark:hover:bg-white/10">

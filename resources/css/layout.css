@@ -1,8 +1,9 @@
 .layout {
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto 1fr auto;
     grid-template-columns: min-content minmax(0, 1fr) min-content;
     grid-template-areas:
+        "banner banner banner"
         "header  header  header"
         "sidebar main    aside"
         "sidebar footer  aside";
@@ -10,6 +11,7 @@
 
 .layout.sidebar {
     grid-template-areas:
+        "banner banner banner"
         "sidebar header  header"
         "sidebar main    aside"
         "sidebar footer  aside";

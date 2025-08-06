@@ -56,6 +56,7 @@ class ProfileController extends Controller
 
         Auth::logout();
 
+        $user->teams()->detach();
         $user->delete();
 
         $request->session()->invalidate();

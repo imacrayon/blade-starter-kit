@@ -5,7 +5,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <x-form method="post" :action="route('register')" class="space-y-6">
+    <x-form method="post" :action="route('register', ['code' => $request->code])" class="space-y-6">
         <!-- Name -->
         <x-input
             type="text"
