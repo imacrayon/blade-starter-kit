@@ -6,7 +6,7 @@
             <x-form method="post" action="{{ route('teams.invitations.store', $team) }}" autocomplete="off" class="max-w-lg space-y-6">
                 <x-input :label="__('Email')" name="email" type="email" required />
 
-                <x-select :label="__('Role')" name="role" :options="App\UserRole::cases()" :value="$invitation->role" required />
+                <x-select :label="__('Role')" name="role" :options="App\UserRole::class" :value="$invitation->role" required />
 
                 <div class="flex items-center gap-3">
                     <x-button>{{ __('Save') }}</x-button>
