@@ -13,12 +13,12 @@
     'border border-transparent',
     'aria-current:text-(--color-accent-content) hover:aria-current:text-(--color-accent-content)',
     match($variant) { // Hover...
-        'primary' => 'hover:text-gray-800 dark:hover:text-white hover:bg-gray-800/5 dark:hover:bg-white/[7%]',
-        'secondary' => 'hover:text-gray-800 dark:hover:text-white hover:bg-gray-800/[4%] dark:hover:bg-white/[7%]',
+        'primary' => 'hover:text-gray-800 dark:hover:text-white hover:bg-gray-800/5 dark:hover:bg-white/7',
+        'secondary' => 'hover:text-gray-800 dark:hover:text-white hover:bg-gray-800/4 dark:hover:bg-white/7',
     },
     match($variant) { // Current...
-        'primary' => 'aria-current:bg-white dark:aria-current:bg-white/[7%] aria-current:border aria-current:border-gray-200 dark:aria-current:border-transparent',
-        'secondary' => 'aria-current:bg-gray-800/[4%] dark:aria-current:bg-white/[7%]',
+        'primary' => 'aria-current:bg-white dark:aria-current:bg-white/7 aria-current:border aria-current:border-gray-200 dark:aria-current:border-transparent',
+        'secondary' => 'aria-current:bg-gray-800/4 dark:aria-current:bg-white/7',
     },
 ]) }}>
     <?php if (is_string($before) && $before !== ''): ?>

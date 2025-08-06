@@ -27,7 +27,7 @@ $classes = [
         'primary' => 'text-[var(--color-accent-foreground)]',
         'secondary' => 'text-gray-800 dark:text-white aria-pressed:text-[var(--color-accent-foreground)]',
         'danger' => 'text-white',
-        'link' => 'p-0 underline text-(--color-accent-content) decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_30%)] hover:decoration-current',
+        'link' => '!h-auto p-0 underline text-(--color-accent-content) decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_30%)] hover:decoration-current',
         default => '',
     },
     match ($variant) { // Border color...

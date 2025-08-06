@@ -1,8 +1,3 @@
-<div {{ $attributes->merge(['class' => 'sm:mx-px relative bg-gray-50 [:where(&)]:rounded-[0.75rem] [:where(&)]:p-1']) }}>
-    @isset($head)
-        <div class="px-3 py-1">
-            {{ $head }}
-        </div>
-    @endisset
+<div {{ $attributes->merge(['class' => 'relative bg-gray-50 dark:bg-gray-900/50 space-y-1 [:where(&)]:rounded-[0.75rem] [:where(&)]:p-1 [&>[data-heading]]:px-3 [&>[data-heading]]:py-1']) }}>
     {{ $slot }}
 </div>

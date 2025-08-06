@@ -5,12 +5,12 @@
     {{ $paginator->withQueryString()->links() }}
   @else
     <div class="py-1 px-3">
-      <p class="text-sm text-gray-700 leading-5">
-        Showing
+      <p class="text-sm">
+        {{ __('Showing') }}
         <span class="font-medium">{{ $count = $paginator->count() }}</span>
-        of
+        {{ __('of') }}
         <span class="font-medium">{{ $count }}</span>
-        results
+        {{ __('results') }}
       </p>
     </div>
   @endif
