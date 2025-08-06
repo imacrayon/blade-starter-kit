@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
-            $table->uuid('code');
+            $table->uuid('code')->index();
             $table->string('email');
             $table->string('role');
             $table->foreignId('sender_id');
