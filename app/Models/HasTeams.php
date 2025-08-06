@@ -12,6 +12,10 @@ trait HasTeams
 
     public function team(): BelongsTo
     {
+        if (is_null($this->team_id) && $this->id) {
+            $this->healTeams();
+        }
+
         return $this->belongsTo(Team::class);
     }
 
@@ -71,21 +75,22 @@ trait HasTeams
     {
         $this->teams()->detach($team);
 
-        if (self::$hasActiveTeam) {
-            if ($this->team_id !== $team->id) {
-                return $this;
-            }
-
-            if ($newTeam = $this->teams()->first()) {
-                $this->update(['team_id' => $newTeam->getKey()]);
-                $this->setRelation('team', $newTeam);
-            } else {
-                $this->joinTeam(Team::create([
-                    'name' => 'Untitled Team',
-                ]), UserRole::ADMIN);
-            }
+        if (self::$hasActiveTeam && $this->team_id === $team->id) {
+            $this->healTeams();
         }
 
         return $this;
+    }
+
+    public function healTeams()
+    {
+        if ($team = $this->teams()->first()) {
+            $this->update(['team_id' => $team->getKey()]);
+            $this->setRelation('team', $team);
+        } else {
+            $this->joinTeam(Team::create([
+                'name' => 'Untitled Team',
+            ]), UserRole::ADMIN);
+        }
     }
 }

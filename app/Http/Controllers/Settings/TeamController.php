@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class TeamController extends Controller
 {
     public function update(Request $request): RedirectResponse
     {
-        $request->validate([
-            'team_id' => ['required', Rule::in($request->user()->teams->pluck('id'))],
-        ]);
+        $team = Team::findOrFail($request->team_id);
+        abort_unless($this->belongsToTeam($team), '403');
 
-        $request->user()->update(['team_id' => $request->team_id]);
+        $request->user()->update(['team_id' => $team->id]);
 
-        return to_route('teams.show', $request->team_id);
+        return to_route('teams.show', $team);
     }
 }
