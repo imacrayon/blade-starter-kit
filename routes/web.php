@@ -7,7 +7,6 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ResentInvitationController;
 use App\Http\Controllers\Settings;
 use App\Http\Controllers\TeamController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
@@ -29,8 +28,6 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
 
     Route::middleware(['verified'])->group(function () {
         Route::get('/', AppController::class)->name('app');
-
-        Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
 
         Route::get('teams/create', [TeamController::class, 'create'])->name('teams.create');
         Route::post('teams', [TeamController::class, 'store'])->name('teams.store');
