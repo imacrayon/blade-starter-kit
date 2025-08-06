@@ -18,9 +18,8 @@
             <x-button>Update</x-button>
             <x-button variant="secondary" href="{{ route('teams.show', $team) }}">Cancel</x-button>
             <x-spacer />
-            <x-form method="delete" action="{{ route('teams.memberships.destroy', [$team, $user]) }}" onsubmit="return confirm('{{ $user->name }} will be removed from this team.')" class="contents">
-                <x-button variant="danger">{{ __('Remove User') }}</x-button>
-            </x-form>
+            <x-button form="delete_user" variant="danger">{{ __('Remove User') }}</x-button>
         </div>
     </x-form>
+    <x-form id="delete_user" method="delete" action="{{ route('teams.memberships.destroy', [$team, $user]) }}" onsubmit="return confirm('{{ __(':user will be removed from this team', ['user' => $user->name]) }}')">
 </x-layouts.app>
