@@ -54,7 +54,7 @@ class Invitation extends Model
 
     public function url()
     {
-        return route('register', ['code' => $this->code]);
+        return route('register', ['code' => (string) $this->code]);
     }
 
     public function accept(User $user)

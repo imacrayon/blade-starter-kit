@@ -46,7 +46,7 @@ class RegistrationController extends Controller
                 'role' => UserRole::MEMBER,
             ]);
 
-            if (! $invitation?->accept($user)) {
+            if (is_null($invitation?->accept($user))) {
                 Team::forUser($user);
             }
 

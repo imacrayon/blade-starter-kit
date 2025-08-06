@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasTeams
 {
+    public static $hasActiveTeam = true;
+
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
@@ -57,7 +59,7 @@ trait HasTeams
 
         $this->unsetRelation('teams');
 
-        if ($this->hasAttribute('team_id')) {
+        if (self::$hasActiveTeam) {
             $this->update(['team_id' => $team->id]);
             $this->unsetRelation('team');
         }
@@ -69,7 +71,7 @@ trait HasTeams
     {
         $this->teams()->detach($team);
 
-        if ($this->hasAttribute('team_id')) {
+        if (self::$hasActiveTeam) {
             if ($this->team_id !== $team->id) {
                 return $this;
             }
