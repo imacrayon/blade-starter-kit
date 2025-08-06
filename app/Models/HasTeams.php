@@ -61,7 +61,7 @@ trait HasTeams
 
         if (self::$hasActiveTeam) {
             $this->update(['team_id' => $team->id]);
-            $this->unsetRelation('team');
+            $this->setRelation('team', $team);
         }
 
         return $this;
@@ -78,7 +78,7 @@ trait HasTeams
 
             if ($newTeam = $this->teams()->first()) {
                 $this->update(['team_id' => $newTeam->getKey()]);
-                $this->unsetRelation('team');
+                $this->setRelation('team', $newTeam);
             } else {
                 $this->joinTeam(Team::create([
                     'name' => 'Untitled Team',
