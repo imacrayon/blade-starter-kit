@@ -12,7 +12,7 @@ class TeamController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $team = Team::findOrFail($request->team_id);
-        abort_unless($this->belongsToTeam($team), '403');
+        abort_unless($request->user()->belongsToTeam($team), '403');
 
         $request->user()->update(['team_id' => $team->id]);
 
