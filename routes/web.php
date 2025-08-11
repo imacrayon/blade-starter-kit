@@ -32,7 +32,7 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
         Route::get('teams/create', [TeamController::class, 'create'])->name('teams.create');
         Route::post('teams', [TeamController::class, 'store'])->name('teams.store');
         Route::get('teams/{team}', [TeamController::class, 'show'])->name('teams.show')->can('view', 'team');
-        Route::get('teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit')->can('update', 'team');
+        Route::get('teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit')->can('view', 'team');
         Route::put('teams/{team}', [TeamController::class, 'update'])->name('teams.update')->can('update', 'team');
 
         Route::get('teams/{team}/invitations', [InvitationController::class, 'index'])->name('teams.invitations.index')->can('update', 'team');
