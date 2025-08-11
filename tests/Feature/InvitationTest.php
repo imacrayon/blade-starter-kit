@@ -89,7 +89,9 @@ class InvitationTest extends TestCase
 
     public function test_user_can_register_with_invitation_code(): void
     {
-        $invitation = Invitation::factory()->create();
+        $invitation = Invitation::factory()->create([
+            'role' => UserRole::ADMIN,
+        ]);
 
         $response = $this->post($invitation->url(), [
             'name' => 'Test User',
@@ -103,5 +105,6 @@ class InvitationTest extends TestCase
         $user = User::latest('id')->first();
         $this->assertCount(1, $user->teams);
         $this->assertSame($invitation->team_id, $user->team_id);
+        $this->assertSame($invitation->role, $user->teams->first()->membership->role);
     }
 }

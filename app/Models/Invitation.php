@@ -61,7 +61,7 @@ class Invitation extends Model
     {
         return DB::transaction(function () use ($user) {
             if ($this->team_id) {
-                $user->joinTeam($this->team);
+                $user->joinTeam($this->team, $this->role);
             }
 
             return $this->delete();
