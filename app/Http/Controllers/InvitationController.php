@@ -41,17 +41,19 @@ class InvitationController extends Controller
 
     public function show(Request $request, Invitation $invitation)
     {
-        if ($user = $request->user()) {
-            if ($user->belongsToTeam($invitation->team)) {
-                Auth::logout($user);
-            } else {
-                return to_route('teams.memberships.create', $invitation);
-            }
+        $user = $request->user();
+
+        if (is_null($user)) {
+            return view('teams.invitations.show', [
+                'invitation' => $invitation,
+            ]);
         }
 
-        return view('teams.invitations.show', [
-            'invitation' => $invitation,
-        ]);
+        if ($user->belongsToTeam($invitation->team)) {
+            Auth::logout();
+        }
+
+        return to_route('teams.memberships.create', $invitation);
     }
 
     public function destroy(Invitation $invitation)
