@@ -9,7 +9,6 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant aria-current (&[aria-current="page"]);
 
-
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --color-accent: var(--color-gray-800);
