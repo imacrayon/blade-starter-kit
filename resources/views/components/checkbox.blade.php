@@ -4,12 +4,13 @@ $classes = [
     'shrink-0 size-5 rounded-md',
     'text-sm text-gray-700 dark:text-gray-800',
     'shadow-xs disabled:opacity-75 disabled:checked:opacity-50 disabled:shadow-none checked:shadow-none indeterminate:shadow-none',
-    'border border-gray-300 dark:border-white/10',
+    'border border-gray-300 dark:border-white/10 outline-offset-2',
     'disabled:border-gray-200 dark:disabled:border-white/5',
     'checked:border-transparent indeterminate:border-transparent',
     'disabled:checked:border-transparent disabled:indeterminate:border-transparent',
     'bg-white dark:bg-white/5',
     'checked:bg-(--color-accent)',
+    'aria-invalid:border-red-500',
 ];
 @endphp
 
