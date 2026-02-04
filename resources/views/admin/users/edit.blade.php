@@ -8,8 +8,8 @@
         <x-select :label="__('Role')" name="role" :options="App\UserRole::class"  :value="$user->role" required />
 
         <div class="flex gap-3">
-            <x-button>{{ __('Update') }}</x-button>
-            <x-button variant="secondary" onclick="history.back()">{{ __('Cancel') }}</x-button>
+            <x-button variant="primary">{{ __('Update') }}</x-button>
+            <x-button type="button" onclick="history.back()">{{ __('Cancel') }}</x-button>
             <x-spacer />
             <x-button variant="danger" form="delete_user">{{ __('Delete user') }}</x-button>
         </div>

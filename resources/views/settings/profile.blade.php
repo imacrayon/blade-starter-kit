@@ -27,7 +27,7 @@
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">
-                    <x-button class="w-full">{{ __('Save') }}</x-button>
+                    <x-button variant="primary" class="w-full">{{ __('Save') }}</x-button>
                 </div>
 
                 <x-action-message class="me-3" on="profile-updated">
@@ -58,7 +58,7 @@
                     <x-input type="password" :label="__('Password')" name="password" />
 
                     <div class="flex justify-end space-x-2">
-                        <x-button variant="secondary" form="confirm_user_deletion_close">{{ __('Cancel') }}</x-button>
+                        <x-button form="confirm_user_deletion_close">{{ __('Cancel') }}</x-button>
                         <x-button variant="danger">{{ __('Delete account') }}</x-button>
                     </div>
                 </x-form>

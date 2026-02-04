@@ -9,8 +9,8 @@
                 <x-select :label="__('Role')" name="role" :options="App\UserRole::class" :value="$invitation->role" required />
 
                 <div class="flex items-center gap-3">
-                    <x-button>{{ __('Save') }}</x-button>
-                    <x-button variant="secondary" href="{{ route('teams.invitations.index', $team) }}">{{ __('Cancel') }}</x-button>
+                    <x-button variant="primary">{{ __('Save') }}</x-button>
+                    <x-button href="{{ route('teams.invitations.index', $team) }}">{{ __('Cancel') }}</x-button>
                 </div>
             </x-form>
         </x-card>
@@ -41,7 +41,7 @@
                                     <p class="text-xs text-gray-600">Sent <x-time :datetime="$invitation->updated_at" /></p>
                                 </div>
                                 <x-popover>
-                                    <x-button type="button" variant="secondary" class="px-0 size-10">
+                                    <x-button type="button" class="px-0 size-10">
                                         <span class="sr-only">Open options</span>
                                         <x-phosphor-dots-three-vertical width="20" height="20" class="text-gray-500" />
                                     </x-button>

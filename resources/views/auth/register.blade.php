@@ -43,7 +43,7 @@
             autocomplete="new-password"
         />
 
-        <x-button class="w-full">{{ __('Create account') }}</x-button>
+        <x-button variant="primary" class="w-full">{{ __('Create account') }}</x-button>
     </x-form>
 
     <div class="space-x-1 text-center text-sm text-gray-600 dark:text-gray-400">

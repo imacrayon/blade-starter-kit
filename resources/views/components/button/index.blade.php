@@ -1,6 +1,6 @@
 @props([
     'href' => '',
-    'variant' => 'primary',
+    'variant' => 'secondary',
     'size' => 'base',
     'before' => '',
     'after' => '',
@@ -52,13 +52,13 @@ $classes = [
 <?php if ($href): ?>
   <a href="{{ $href }}" {{ $attributes->class($classes) }}>
     <?php if (is_string($before) && $before !== ''): ?>
-        <x-dynamic-component :component="$before" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-80 group-hover:opacity-100 -ml-0.5" />
+        <x-dynamic-component :component="$before" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-40 group-hover:opacity-60 -ml-0.5" />
     <?php else: ?>
         {{ $before }}
     <?php endif; ?>
     {{ $slot }}
     <?php if (is_string($after) && $after !== ''): ?>
-        <x-dynamic-component :component="$after" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-80 group-hover:opacity-100 -mr-0.5" />
+        <x-dynamic-component :component="$after" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-40 group-hover:opacity-60 -mr-0.5" />
     <?php else: ?>
         {{ $after }}
     <?php endif; ?>
@@ -66,13 +66,13 @@ $classes = [
 <?php else: ?>
   <button {{ $attributes->class($classes) }}>
     <?php if (is_string($before) && $before !== ''): ?>
-        <x-dynamic-component :component="$before" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-80 group-hover:opacity-100 -ml-0.5" />
+        <x-dynamic-component :component="$before" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-40 group-hover:opacity-60 -ml-0.5" />
     <?php else: ?>
         {{ $before }}
     <?php endif; ?>
     {{ $slot }}
     <?php if (is_string($after) && $after !== ''): ?>
-        <x-dynamic-component :component="$after" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-80 group-hover:opacity-100 -mr-0.5" />
+        <x-dynamic-component :component="$after" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-40 group-hover:opacity-60 -mr-0.5" />
     <?php else: ?>
         {{ $after }}
     <?php endif; ?>

@@ -4,8 +4,8 @@
         <x-form method="put" :action="route('teams.update', $team)" class="mt-6 max-w-lg space-y-6">
             @include('teams._fields')
             <div class="flex gap-3">
-                <x-button>Save</x-button>
-                <x-button variant="secondary" onclick="history.back()">Cancel</x-button>
+                <x-button variant="primary">Save</x-button>
+                <x-button type="button" onclick="history.back()">Cancel</x-button>
             </div>
         </x-form>
     @endcan

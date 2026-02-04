@@ -36,7 +36,7 @@
             autocomplete="new-password"
         />
 
-        <x-button class="w-full">{{ __('Reset password') }}</x-button>
+        <x-button variant="primary" class="w-full">{{ __('Reset password') }}</x-button>
     </x-form>
 </div>
 </x-layouts.auth>

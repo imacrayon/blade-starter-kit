@@ -4,7 +4,7 @@
     <form x-target.replace="users" x-on:input.debounce="$el.requestSubmit()" class="flex gap-3">
         <x-label for="q" :value="__('Search')" class="sr-only" />
         <x-input name="q" placeholder="Search by name or email" autocomplete="off" />
-        <x-button x-show="false" variant="secondary">Submit</x-button>
+        <x-button x-show="false">Submit</x-button>
     </form>
     <div id="users">
         @if($users->isNotEmpty())

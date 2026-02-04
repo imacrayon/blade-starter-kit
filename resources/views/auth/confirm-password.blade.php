@@ -18,7 +18,7 @@
             autocomplete="new-password"
         />
 
-        <x-button class="w-full">{{ __('Confirm') }}</x-button>
+        <x-button variant="primary" class="w-full">{{ __('Confirm') }}</x-button>
     </x-form>
 </div>
 </x-layouts.auth>

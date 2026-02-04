@@ -15,7 +15,7 @@
             autofocus
         />
 
-        <x-button class="w-full">{{ __('Email password reset link') }}</x-button>
+        <x-button variant="primary" class="w-full">{{ __('Email password reset link') }}</x-button>
     </x-form>
 
     <div class="text-center text-sm text-gray-600 dark:text-gray-400">
