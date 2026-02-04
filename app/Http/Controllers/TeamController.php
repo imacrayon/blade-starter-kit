@@ -60,7 +60,7 @@ class TeamController extends Controller
     public function destroy(Team $team)
     {
         DB::transaction(function () use ($team) {
-            $team->users()->where('team_id', $team->id)->update(['team_id' => null]);
+            $team->users()->where('users.team_id', $team->id)->update(['users.team_id' => null]);
             $team->users()->detach();
             $team->delete();
         });
