@@ -1,6 +1,6 @@
 <x-layouts.app :title="__('Teams')">
     <x-headbar :title="__('Teams')">
-        <x-button href="{{ route('teams.create') }}" before="phosphor-plus">{{ __('New') }}</x-button>
+        <x-button variant="primary" href="{{ route('teams.create') }}" before="phosphor-plus">{{ __('New') }}</x-button>
     </x-headbar>
     <x-section class="mt-6">
         <form x-target.replace="teams" x-on:input.debounce="$el.requestSubmit()" class="flex gap-3">

@@ -33,7 +33,7 @@
 
         <x-checkbox name="remember" :label="__('Remember me')" />
 
-        <x-button class="w-full">{{ __('Log in') }}</x-button>
+        <x-button variant="primary" class="w-full">{{ __('Log in') }}</x-button>
     </x-form>
 
     @if (Route::has('register'))

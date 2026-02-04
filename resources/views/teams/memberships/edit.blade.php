@@ -15,8 +15,8 @@
         </fieldset>
         </div>
         <div class="flex gap-3">
-            <x-button>Update</x-button>
-            <x-button variant="secondary" href="{{ route('teams.show', $team) }}">Cancel</x-button>
+            <x-button variant="primary">Update</x-button>
+            <x-button href="{{ route('teams.show', $team) }}">Cancel</x-button>
             <x-spacer />
             <x-button form="delete_user" variant="danger">{{ __('Remove User') }}</x-button>
         </div>

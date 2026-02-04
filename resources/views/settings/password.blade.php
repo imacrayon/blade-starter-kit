@@ -25,7 +25,7 @@
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">
-                    <x-button class="w-full">{{ __('Save') }}</x-button>
+                    <x-button variant="primary" class="w-full">{{ __('Save') }}</x-button>
                 </div>
 
                 <x-action-message class="me-3" on="password-updated">
