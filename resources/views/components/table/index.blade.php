@@ -6,7 +6,7 @@
           <thead {{ $head->attributes }}>
             {{ $head }}
           </thead>
-          <tbody {{ $body->attributes->class('border-t border-gray-800/10 dark:border-white/10 divide-y divide-gray-800/10 dark:divide-white/20') }}">
+          <tbody {{ $body->attributes->class('border-t border-gray-800/10 dark:border-white/10 divide-y divide-gray-800/10 dark:divide-white/20') }}>
             {{ $body }}
           </tbody>
         </table>
