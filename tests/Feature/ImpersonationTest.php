@@ -19,7 +19,7 @@ class ImpersonationTest extends TestCase
             ->post(route('admin.impersonation.store'), [
                 'user_id' => $target->id,
             ]);
-        $response->assertRedirect('/app');
+        $response->assertRedirectToRoute('app');
         $this->assertAuthenticatedAs($target);
         $this->assertEquals($admin->id, session('impersonator_id'));
         $this->assertEquals($target->name, session('impersonating'));
