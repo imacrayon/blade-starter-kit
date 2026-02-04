@@ -32,19 +32,13 @@ class RegistrationController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
         $validated['password'] = Hash::make($validated['password']);
+        $validated['role'] = UserRole::MEMBER;
 
         $invitation = Invitation::where('code', $request->code)->first();
-        $validated['role'] = $invitation?->role ?? UserRole::MEMBER;
 
-        $user = DB::transaction(function () use ($request, $invitation) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role' => UserRole::MEMBER,
-            ]);
+        $user = DB::transaction(function () use ($validated, $invitation) {
+            $user = User::create($validated);
 
             if (is_null($invitation?->accept($user))) {
                 Team::forUser($user);
