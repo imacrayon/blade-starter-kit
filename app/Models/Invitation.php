@@ -29,7 +29,7 @@ class Invitation extends Model
     protected static function booted()
     {
         static::creating(function ($invitation) {
-            $invitation->code = $invitation->code ?: Str::uuid();
+            $invitation->code = $invitation->code ?: (string) Str::uuid();
         });
     }
 
@@ -54,7 +54,7 @@ class Invitation extends Model
 
     public function url()
     {
-        return route('register', ['code' => (string) $this->code]);
+        return route('register', ['code' => $this->code]);
     }
 
     public function accept(User $user)
