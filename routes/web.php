@@ -23,8 +23,8 @@ Route::middleware(['auth'])->prefix('app')->group(function () {
     Route::get('settings/appearance', [Settings\AppearanceController::class, 'edit'])->name('settings.appearance.edit');
     Route::put('settings/team', [Settings\TeamController::class, 'update'])->name('settings.team.update');
 
-    Route::get('/invitations/{invitation:code}', [MembershipController::class, 'create'])->name('teams.memberships.create');
-    Route::post('/invitations/{invitation:code}', [MembershipController::class, 'store'])->name('teams.memberships.store');
+    Route::get('invitations/{invitation:code}', [MembershipController::class, 'create'])->name('teams.memberships.create');
+    Route::post('invitations/{invitation:code}', [MembershipController::class, 'store'])->name('teams.memberships.store');
 
     Route::middleware(['verified'])->group(function () {
         Route::get('/', AppController::class)->name('app');
