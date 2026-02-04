@@ -15,7 +15,7 @@ $classes = [
 @endphp
 
 <x-has-inline-field>
-    <div class="group grid size-5 grid-cols-1">
+    <div class="shrink-0 group grid size-5 grid-cols-1">
         <input type="checkbox" {{ $controlAttributes }} value="{{ $value }}" {{ $attributes->class($classes) }}>
         <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center text-(--color-accent-foreground) stroke-current" viewBox="0 0 14 14" fill="none">
             <path class="opacity-0 group-has-checked:opacity-100" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>

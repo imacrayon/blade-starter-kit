@@ -14,12 +14,12 @@ $y = match ($align) {
 };
 @endphp
 
-<div x-data="popover" class="relative">
+<div x-data="popover" {{ $attributes->class(['relative']) }}>
     {{ $slot }}
     <div x-cloak {{ $menu->attributes->class([
         $x, $y,
         'absolute z-50',
-        '[:where(&)]:min-w-48 p-[.3125rem]',
+        '[:where(&)]:min-w-48 px-[.3125rem]',
         'rounded-lg shadow-xs',
         'border border-gray-200 dark:border-gray-600',
         'bg-white dark:bg-gray-700',
