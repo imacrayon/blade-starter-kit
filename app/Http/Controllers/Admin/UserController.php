@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -40,7 +41,10 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete();
+        DB::transaction(function () use ($user) {
+            $user->teams()->detach();
+            $user->delete();
+        });
 
         return to_route('admin.users.index');
     }
