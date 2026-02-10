@@ -14,8 +14,6 @@ class Team extends Model
     /** @use HasFactory<\Database\Factories\TeamFactory> */
     use HasFactory, Searchable;
 
-    protected static $unguarded = true;
-
     public static function forUser(User $user, $attributes = [])
     {
         $team = self::create($attributes + [
