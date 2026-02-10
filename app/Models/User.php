@@ -15,8 +15,6 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, HasTeams, MustVerifyEmail, Notifiable, Searchable;
 
-    protected static $unguarded = true;
-
     protected $hidden = [
         'password',
         'remember_token',
