@@ -32,9 +32,7 @@ class User extends Authenticatable
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => "https://unavatar.io/{$attributes['email']}?".http_build_query([
-                'fallback' => "https://ui-avatars.com/api/{$this->name}/32/dbeafe/2563eb",
-            ])
+            get: fn () => route('avatars.show', $this)
         )->shouldCache();
     }
 
