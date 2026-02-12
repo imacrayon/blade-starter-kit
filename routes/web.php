@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
 
-Route::get('/invitations/{invitation:code}', [InvitationController::class, 'show'])->name('teams.invitations.show');
+Route::get('invitations/{invitation:code}', [InvitationController::class, 'show'])->name('teams.invitations.show');
 
 Route::middleware(['auth'])->prefix('app')->group(function () {
     Route::redirect('settings', 'settings/profile');
