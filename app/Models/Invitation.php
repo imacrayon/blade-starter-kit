@@ -74,9 +74,7 @@ class Invitation extends Model
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => "https://unavatar.io/{$attributes['email']}?".http_build_query([
-                'fallback' => "https://ui-avatars.com/api/{$this->name}/48/dbeafe/1e40af",
-            ])
+            get: fn ($value, $attributes) => "https://ui-avatars.com/api/{$this->name}/48/dbeafe/1e40af"
         )->shouldCache();
     }
 }
