@@ -27,7 +27,7 @@ class TeamController extends Controller
         return to_route('teams.show', $team);
     }
 
-    public function show(Request $request, Team $team)
+    public function show(Request $request, Team $team): View
     {
         return view('teams.show', [
             'team' => $team,
@@ -35,10 +35,10 @@ class TeamController extends Controller
                 ->query(function ($query) use ($team) {
                     $query->join('memberships', 'users.id', '=', 'memberships.user_id')
                         ->where('memberships.team_id', $team->id)
-                        ->select('users.*', 'memberships.role as membership_role');
+                        ->select('users.*', 'memberships.role as membership_role')
+                        ->orderBy('membership_role')
+                        ->orderBy('name');
                 })
-                ->orderBy('membership_role')
-                ->orderBy('name')
                 ->paginate(),
         ]);
     }
