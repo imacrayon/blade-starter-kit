@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class ImpersonationTest extends TestCase
@@ -29,6 +30,7 @@ class ImpersonationTest extends TestCase
     {
         $admin = User::factory()->admin()->create();
         $target = User::factory()->create();
+
         // Start impersonation
         $this
             ->actingAs($admin)
@@ -36,6 +38,7 @@ class ImpersonationTest extends TestCase
                 'user_id' => $target->id,
             ]);
         $this->assertAuthenticatedAs($target);
+
         // Stop impersonation
         session(['impersonator_id' => $admin->id, 'impersonating' => $target->name]);
         $response = $this
@@ -65,5 +68,58 @@ class ImpersonationTest extends TestCase
         $this->actingAs($user);
         $response = $this->delete(route('impersonation.destroy'));
         $response->assertNotFound();
+    }
+
+    public function test_admin_cannot_impersonate_another_admin(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $targetAdmin = User::factory()->admin()->create();
+
+        $response = $this
+            ->be($admin)
+            ->post(route('admin.impersonation.store'), [
+                'user_id' => $targetAdmin->id,
+            ]);
+
+        $response->assertForbidden();
+        $this->assertAuthenticatedAs($admin);
+    }
+
+    public function test_impersonation_is_logged(): void
+    {
+        Log::spy();
+
+        $admin = User::factory()->admin()->create();
+        $target = User::factory()->create();
+
+        $this
+            ->be($admin)
+            ->post(route('admin.impersonation.store'), [
+                'user_id' => $target->id,
+            ]);
+
+        Log::shouldHaveReceived('info')->with('Impersonation started', [
+            'admin_id' => $admin->id,
+            'target_user_id' => $target->id,
+        ]);
+    }
+
+    public function test_stopping_impersonation_is_logged(): void
+    {
+        Log::spy();
+
+        $admin = User::factory()->admin()->create();
+        $target = User::factory()->create();
+
+        session(['impersonator_id' => $admin->id, 'impersonating' => $target->name]);
+
+        $this
+            ->be($target)
+            ->delete(route('impersonation.destroy'));
+
+        Log::shouldHaveReceived('info')->with('Impersonation ended', [
+            'admin_id' => $admin->id,
+            'impersonated_user_id' => $target->id,
+        ]);
     }
 }
