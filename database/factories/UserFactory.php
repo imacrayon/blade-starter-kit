@@ -25,6 +25,9 @@ class UserFactory extends Factory
             'role' => UserRole::MEMBER,
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'two_factor_secret' => null,
+            'two_factor_recovery_codes' => null,
+            'two_factor_confirmed_at' => null,
         ];
     }
 

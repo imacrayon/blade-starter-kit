@@ -11,7 +11,7 @@
                         <x-text class="mt-4">
                             {{ __('Your email address is unverified.') }}
 
-                            <x-button variant="link" :formaction="route('verification.store')" name="_method" value="post">
+                            <x-button variant="link" :formaction="route('verification.send')" name="_method" value="post">
                                 {{ __('Click here to re-send the verification email.') }}
                             </x-button>
                         </x-text>

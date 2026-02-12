@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Concerns\ProfileValidationRules;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    use ProfileValidationRules;
+
     public function edit(Request $request): View
     {
         return view('settings.profile', [
@@ -23,17 +24,7 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'lowercase',
-                'email',
-                'max:255',
-                Rule::unique(User::class)->ignore($user->id),
-            ],
-        ]);
+        $validated = $request->validate($this->profileRules($user->id));
 
         $user->fill($validated);
 

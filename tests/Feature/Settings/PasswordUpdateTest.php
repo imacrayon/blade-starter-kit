@@ -46,4 +46,41 @@ class PasswordUpdateTest extends TestCase
             ->assertSessionHasErrors('current_password')
             ->assertRedirectBack();
     }
+
+    public function test_password_update_keeps_current_session_authenticated(): void
+    {
+        $user = User::factory()->create();
+
+        $this
+            ->be($user)
+            ->put(route('settings.password.update'), [
+                'current_password' => 'password',
+                'password' => 'new-password',
+                'password_confirmation' => 'new-password',
+            ]);
+
+        $this->assertTrue(session()->has('password_hash_web'));
+        $this->assertAuthenticated();
+    }
+
+    public function test_password_update_is_rate_limited(): void
+    {
+        $user = User::factory()->create();
+
+        for ($i = 0; $i < 5; $i++) {
+            $this->be($user)->put(route('settings.password.update'), [
+                'current_password' => 'wrong-password',
+                'password' => 'new-password',
+                'password_confirmation' => 'new-password',
+            ]);
+        }
+
+        $response = $this->be($user)->put(route('settings.password.update'), [
+            'current_password' => 'wrong-password',
+            'password' => 'new-password',
+            'password_confirmation' => 'new-password',
+        ]);
+
+        $response->assertStatus(429);
+    }
 }

@@ -11,7 +11,7 @@
     @endif
 
     <div class="flex flex-col items-center justify-between space-y-3">
-        <x-form method="post" action="{{ route('verification.store') }}">
+        <x-form method="post" action="{{ route('verification.send') }}">
             <x-button variant="primary" class="w-full">
                 {{ __('Resend verification email') }}
             </x-button>

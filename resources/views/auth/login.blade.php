@@ -5,7 +5,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <x-form method="post" :action="route('login')" class="space-y-6">
+    <x-form method="post" :action="route('login.store')" class="space-y-6">
         <x-input
             type="email"
             :label="__('Email address')"

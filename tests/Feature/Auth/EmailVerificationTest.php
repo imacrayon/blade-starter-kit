@@ -17,7 +17,7 @@ class EmailVerificationTest extends TestCase
     {
         $user = User::factory()->unverified()->create();
 
-        $response = $this->be($user)->get('/verify-email');
+        $response = $this->be($user)->get(route('verification.notice'));
 
         $response->assertStatus(200);
     }

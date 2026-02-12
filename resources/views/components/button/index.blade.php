@@ -4,6 +4,7 @@
     'size' => 'base',
     'before' => '',
     'after' => '',
+    'as' => 'button'
 ])
 
 @php
@@ -52,29 +53,29 @@ $classes = [
 <?php if ($href): ?>
   <a href="{{ $href }}" {{ $attributes->class($classes) }}>
     <?php if (is_string($before) && $before !== ''): ?>
-        <x-dynamic-component :component="$before" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-40 group-hover:opacity-60 -ml-0.5" />
+        <x-dynamic-component :component="$before" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-80 group-hover:opacity-90 -ml-0.5" />
     <?php else: ?>
         {{ $before }}
     <?php endif; ?>
     {{ $slot }}
     <?php if (is_string($after) && $after !== ''): ?>
-        <x-dynamic-component :component="$after" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-40 group-hover:opacity-60 -mr-0.5" />
+        <x-dynamic-component :component="$after" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-80 group-hover:opacity-90 -mr-0.5" />
     <?php else: ?>
         {{ $after }}
     <?php endif; ?>
   </a>
 <?php else: ?>
-  <button {{ $attributes->class($classes) }}>
+  <{{ $as }} {{ $attributes->class($classes) }}>
     <?php if (is_string($before) && $before !== ''): ?>
-        <x-dynamic-component :component="$before" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-40 group-hover:opacity-60 -ml-0.5" />
+        <x-dynamic-component :component="$before" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-80 group-hover:opacity-90 -ml-0.5" />
     <?php else: ?>
         {{ $before }}
     <?php endif; ?>
     {{ $slot }}
     <?php if (is_string($after) && $after !== ''): ?>
-        <x-dynamic-component :component="$after" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-40 group-hover:opacity-60 -mr-0.5" />
+        <x-dynamic-component :component="$after" aria-hidden="true" width="20" height="20" class="shrink-0 opacity-80 group-hover:opacity-90 -mr-0.5" />
     <?php else: ?>
         {{ $after }}
     <?php endif; ?>
-  </button>
+  </{{ $as }}>
 <?php endif; ?>

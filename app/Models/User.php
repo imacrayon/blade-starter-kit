@@ -8,15 +8,18 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasTeams, MustVerifyEmail, Notifiable, Searchable;
+    use HasFactory, HasTeams, MustVerifyEmail, Notifiable, Searchable, TwoFactorAuthenticatable;
 
     protected $hidden = [
         'password',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
         'remember_token',
     ];
 

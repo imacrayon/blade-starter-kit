@@ -5,43 +5,16 @@
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <x-form method="post" :action="route('register', ['code' => $request->code])" class="space-y-6">
-        <!-- Name -->
-        <x-input
-            type="text"
-            :label="__('Full name')"
-            name="name"
-            required
-            autofocus
-            autocomplete="name"
-        />
+    <x-form method="post" :action="route('register')" class="space-y-6">
+        <input type="hidden" name="code" value="{{ request('code') }}" />
 
-        <!-- Email Address -->
-        <x-input
-            type="email"
-            :label="__('Email address')"
-            name="email"
-            required
-            autocomplete="email"
-        />
+        <x-input :label="__('Full name')" name="name" required autofocus autocomplete="name" />
 
-        <!-- Password -->
-        <x-input
-            type="password"
-            :label="__('Password')"
-            name="password"
-            required
-            autocomplete="new-password"
-        />
+        <x-input type="email" :label="__('Email address')" name="email" required autocomplete="email" />
 
-        <!-- Confirm Password -->
-        <x-input
-            type="password"
-            :label="__('Confirm password')"
-            name="password_confirmation"
-            required
-            autocomplete="new-password"
-        />
+        <x-input type="password" :label="__('Password')" name="password" required autocomplete="new-password" />
+
+        <x-input type="password" :label="__('Confirm password')" name="password_confirmation" required autocomplete="new-password" />
 
         <x-button variant="primary" class="w-full">{{ __('Create account') }}</x-button>
     </x-form>

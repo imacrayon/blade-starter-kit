@@ -11,14 +11,14 @@ class RegistrationTest extends TestCase
 
     public function test_registration_screen_can_be_rendered(): void
     {
-        $response = $this->get('/register');
+        $response = $this->get(route('register'));
 
         $response->assertStatus(200);
     }
 
     public function test_new_users_can_register(): void
     {
-        $response = $this->post('/register', [
+        $response = $this->post(route('register.store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
@@ -27,5 +27,19 @@ class RegistrationTest extends TestCase
 
         $response->assertRedirect(route('app'));
         $this->assertAuthenticated();
+    }
+
+    public function test_registration_fails_with_invalid_invitation_code(): void
+    {
+        $response = $this->post(route('register.store'), [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'code' => 'invalid-code',
+        ]);
+
+        $response->assertSessionHasErrors('code');
+        $this->assertGuest();
     }
 }

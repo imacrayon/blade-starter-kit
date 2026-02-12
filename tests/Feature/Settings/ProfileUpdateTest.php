@@ -91,4 +91,21 @@ class ProfileUpdateTest extends TestCase
 
         $this->assertNotNull($user->fresh());
     }
+
+    public function test_account_deletion_is_rate_limited(): void
+    {
+        $user = User::factory()->create();
+
+        for ($i = 0; $i < 5; $i++) {
+            $this->be($user)->delete(route('settings.profile.destroy'), [
+                'password' => 'wrong-password',
+            ]);
+        }
+
+        $response = $this->be($user)->delete(route('settings.profile.destroy'), [
+            'password' => 'wrong-password',
+        ]);
+
+        $response->assertStatus(429);
+    }
 }
