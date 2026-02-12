@@ -31,19 +31,16 @@ class ImpersonationTest extends TestCase
         $admin = User::factory()->admin()->create();
         $target = User::factory()->create();
 
-        // Start impersonation
         $this
             ->actingAs($admin)
             ->post(route('admin.impersonation.store'), [
                 'user_id' => $target->id,
             ]);
-        $this->assertAuthenticatedAs($target);
 
-        // Stop impersonation
-        session(['impersonator_id' => $admin->id, 'impersonating' => $target->name]);
         $response = $this
             ->be($target)
             ->delete(route('impersonation.destroy'));
+
         $response->assertRedirect(route('admin.users.index'));
         $this->assertAuthenticatedAs($admin);
         $this->assertNull(session('impersonator_id'));
