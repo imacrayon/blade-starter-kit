@@ -3,7 +3,7 @@
     'description',
 ])
 
-<div class="text-center">
+<div {{ $attributes->class('text-center') }}">
     <x-heading size="xl">{{ $title }}</x-heading>
     <x-subheading>{{ $description }}</x-subheading>
 </div>

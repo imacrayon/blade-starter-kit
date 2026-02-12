@@ -5,15 +5,15 @@
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <x-form method="post" action="{{ route('password.store', $request->token) }}" class="space-y-6">
-        <input type="hidden" name="token" value="{{ $request->token }}">
+    <x-form method="post" action="{{ route('password.update') }}" class="space-y-6">
+        <input type="hidden" name="token" value="{{ request()->route('token') }}">
 
         <!-- Email Address -->
         <x-input
             type="email"
             :label="__('Email')"
             name="email"
-            :value="$request->email"
+            :value="request('email')"
             required
             autocomplete="email"
         />

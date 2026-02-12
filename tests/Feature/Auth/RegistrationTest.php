@@ -1,31 +1,32 @@
 <?php
 
-namespace Tests\Feature\Auth;
+test('registration screen can be rendered', function () {
+    $response = $this->get(route('register'));
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+    $response->assertStatus(200);
+});
 
-class RegistrationTest extends TestCase
-{
-    use RefreshDatabase;
+test('new users can register', function () {
+    $response = $this->post(route('register.store'), [
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
 
-    public function test_registration_screen_can_be_rendered(): void
-    {
-        $response = $this->get('/register');
+    $response->assertRedirect(route('app'));
+    $this->assertAuthenticated();
+});
 
-        $response->assertStatus(200);
-    }
+test('registration fails with invalid invitation code', function () {
+    $response = $this->post(route('register.store'), [
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+        'code' => 'invalid-code',
+    ]);
 
-    public function test_new_users_can_register(): void
-    {
-        $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-        ]);
-
-        $response->assertRedirect(route('app'));
-        $this->assertAuthenticated();
-    }
-}
+    $response->assertSessionHasErrors('code');
+    $this->assertGuest();
+});

@@ -12,6 +12,7 @@
     "require": {
         "php": "^8.2",
         "codeat3/blade-phosphor-icons": "^2.3",
+        "laravel/fortify": "^1.34",
         "laravel/framework": "^12.0",
         "laravel/scout": "^10.17",
         "laravel/tinker": "^2.10.1"
