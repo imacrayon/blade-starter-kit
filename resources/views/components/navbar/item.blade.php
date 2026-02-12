@@ -1,5 +1,5 @@
 @props([
-    'current' => false,
+    'current' => request()->fullUrlIs($attributes->get('href')),
     'before' => '',
     'after' => '',
 ])
