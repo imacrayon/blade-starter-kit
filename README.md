@@ -1,8 +1,13 @@
 # Laravel Blade Starter Kit
 
-A Blade port of the official Laravel Starter Kit.
+This is an opinionated starter kit for building multi-tenant Laravel applications with Blade. It comes loaded with features out of the box:
 
-This starter kit features many of the conveniences you'd expect in a modern framework. It has beautiful UI components built with [Alpine.js](https://alpinejs.dev) and [Tailwind CSS](https://tailwindcss.com), route pre-fetching provided by [instant.page](https://instant.page), and Livewire-like reactivity powered by [Alpine AJAX](https://alpine-ajax.js.org).
+- **Teams & invitations** — create teams, invite users by email, and manage roles
+- **Admin panel** — manage users and teams with full-text search
+- **User impersonation** — sign in as any user from the admin panel
+- **Two-factor authentication** — TOTP-based 2FA powered by [Laravel Fortify](https://laravel.com/docs/fortify)
+
+The UI is composed of beautiful Blade components powered by [Alpine.js](https://alpinejs.dev) and [Tailwind CSS](https://tailwindcss.com), with partial page updates via [Alpine AJAX](https://alpine-ajax.js.org) and route pre-fetching via [instant.page](https://instant.page).
 
 ![Preview of the Blade Starter Kit](https://raw.githubusercontent.com/imacrayon/media/main/blade-starter-kit.gif)
 
@@ -29,10 +34,6 @@ Get even more high-quality components by purchasing the official [Alpine UI Comp
 ## Icons
 
 This starter kit uses the refined and versatile [Phosphor](https://phosphoricons.com/) icon collection. However, you can easily replace this collection with any icon set supported by [Blade UI Kit Icons](https://blade-ui-kit.com/blade-icons). To add a new icon set, `composer require` the icon package and replace any `phosphor-*` references with a reference to your preferred icon. You can even install multiple icon collections in the same project, go nuts.
-
-## Coming Soon
-
-Bolt: An API that supports file-based routing for Blade templates.
 
 ## Sponsors
 
