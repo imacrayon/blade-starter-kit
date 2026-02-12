@@ -1,69 +1,109 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Illuminate\Support\Facades\Log;
 
-class ImpersonationTest extends TestCase
-{
-    use RefreshDatabase;
+test('admin can impersonate another user', function () {
+    $admin = User::factory()->admin()->create();
+    $target = User::factory()->create();
+    $response = $this
+        ->be($admin)
+        ->post(route('admin.impersonation.store'), [
+            'user_id' => $target->id,
+        ]);
+    $response->assertRedirectToRoute('app');
+    $this->assertAuthenticatedAs($target);
+    expect(session('impersonator_id'))->toEqual($admin->id);
+    expect(session('impersonating'))->toEqual($target->name);
+});
 
-    public function test_admin_can_impersonate_another_user(): void
-    {
-        $admin = User::factory()->admin()->create();
-        $target = User::factory()->create();
-        $response = $this
-            ->be($admin)
-            ->post(route('admin.impersonation.store'), [
-                'user_id' => $target->id,
-            ]);
-        $response->assertRedirectToRoute('app');
-        $this->assertAuthenticatedAs($target);
-        $this->assertEquals($admin->id, session('impersonator_id'));
-        $this->assertEquals($target->name, session('impersonating'));
-    }
+test('impersonator can stop impersonating', function () {
+    $admin = User::factory()->admin()->create();
+    $target = User::factory()->create();
 
-    public function test_impersonator_can_stop_impersonating(): void
-    {
-        $admin = User::factory()->admin()->create();
-        $target = User::factory()->create();
-        // Start impersonation
-        $this
-            ->actingAs($admin)
-            ->post(route('admin.impersonation.store'), [
-                'user_id' => $target->id,
-            ]);
-        $this->assertAuthenticatedAs($target);
-        // Stop impersonation
-        session(['impersonator_id' => $admin->id, 'impersonating' => $target->name]);
-        $response = $this
-            ->be($target)
-            ->delete(route('impersonation.destroy'));
-        $response->assertRedirect(route('admin.users.index'));
-        $this->assertAuthenticatedAs($admin);
-        $this->assertNull(session('impersonator_id'));
-        $this->assertNull(session('impersonating'));
-    }
+    // Start impersonation
+    $this
+        ->actingAs($admin)
+        ->post(route('admin.impersonation.store'), [
+            'user_id' => $target->id,
+        ]);
+    $this->assertAuthenticatedAs($target);
 
-    public function test_non_admin_cannot_impersonate(): void
-    {
-        $user = User::factory()->create();
-        $target = User::factory()->create();
-        $response = $this
-            ->be($user)
-            ->post(route('admin.impersonation.store'), [
-                'user_id' => $target->id,
-            ]);
-        $response->assertForbidden();
-    }
+    // Stop impersonation
+    session(['impersonator_id' => $admin->id, 'impersonating' => $target->name]);
+    $response = $this
+        ->be($target)
+        ->delete(route('impersonation.destroy'));
+    $response->assertRedirect(route('admin.users.index'));
+    $this->assertAuthenticatedAs($admin);
+    expect(session('impersonator_id'))->toBeNull();
+    expect(session('impersonating'))->toBeNull();
+});
 
-    public function test_cannot_stop_impersonating_if_not_impersonating(): void
-    {
-        $user = User::factory()->admin()->create();
-        $this->actingAs($user);
-        $response = $this->delete(route('impersonation.destroy'));
-        $response->assertNotFound();
-    }
-}
+test('non admin cannot impersonate', function () {
+    $user = User::factory()->create();
+    $target = User::factory()->create();
+    $response = $this
+        ->be($user)
+        ->post(route('admin.impersonation.store'), [
+            'user_id' => $target->id,
+        ]);
+    $response->assertForbidden();
+});
+
+test('cannot stop impersonating if not impersonating', function () {
+    $user = User::factory()->admin()->create();
+    $this->actingAs($user);
+    $response = $this->delete(route('impersonation.destroy'));
+    $response->assertNotFound();
+});
+
+test('admin cannot impersonate another admin', function () {
+    $admin = User::factory()->admin()->create();
+    $targetAdmin = User::factory()->admin()->create();
+
+    $response = $this
+        ->be($admin)
+        ->post(route('admin.impersonation.store'), [
+            'user_id' => $targetAdmin->id,
+        ]);
+
+    $response->assertForbidden();
+    $this->assertAuthenticatedAs($admin);
+});
+
+test('impersonation is logged', function () {
+    Log::spy();
+
+    $admin = User::factory()->admin()->create();
+    $target = User::factory()->create();
+
+    $this
+        ->be($admin)
+        ->post(route('admin.impersonation.store'), [
+            'user_id' => $target->id,
+        ]);
+
+    Log::shouldHaveReceived('info')->with('Impersonation started', [
+        'admin_id' => $admin->id,
+        'target_user_id' => $target->id,
+    ]);
+});
+
+test('stopping impersonation is logged', function () {
+    Log::spy();
+
+    $admin = User::factory()->admin()->create();
+    $target = User::factory()->create();
+
+    session(['impersonator_id' => $admin->id, 'impersonating' => $target->name]);
+
+    $this
+        ->be($target)
+        ->delete(route('impersonation.destroy'));
+
+    Log::shouldHaveReceived('info')->with('Impersonation ended', [
+        'admin_id' => $admin->id,
+        'impersonated_user_id' => $target->id,
+    ]);
+});
