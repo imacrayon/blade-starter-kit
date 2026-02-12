@@ -1,52 +1,33 @@
 <?php
 
-namespace Tests\Feature\Auth;
-
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
-use Tests\TestCase;
 
-class TwoFactorChallengeTest extends TestCase
-{
-    use RefreshDatabase;
+test('two factor challenge redirects to login when not authenticated', function () {
+    $response = $this->get(route('two-factor.login'));
 
-    public function test_two_factor_challenge_redirects_to_login_when_not_authenticated(): void
-    {
-        if (! Features::canManageTwoFactorAuthentication()) {
-            $this->markTestSkipped('Two-factor authentication is not enabled.');
-        }
+    $response->assertRedirectToRoute('login');
+})->skip(fn () => ! Features::canManageTwoFactorAuthentication(), 'Two-factor authentication is not enabled.');
 
-        $response = $this->get(route('two-factor.login'));
+test('two factor challenge can be rendered', function () {
+    Features::twoFactorAuthentication([
+        'confirm' => true,
+        'confirmPassword' => true,
+    ]);
 
-        $response->assertRedirectToRoute('login');
-    }
+    $user = User::factory()->create();
 
-    public function test_two_factor_challenge_can_be_rendered(): void
-    {
-        if (! Features::canManageTwoFactorAuthentication()) {
-            $this->markTestSkipped('Two-factor authentication is not enabled.');
-        }
+    $user->forceFill([
+        'two_factor_secret' => encrypt('test-secret'),
+        'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
+        'two_factor_confirmed_at' => now(),
+    ])->save();
 
-        Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
-        ]);
-
-        $user = User::factory()->create();
-
-        $user->forceFill([
-            'two_factor_secret' => encrypt('test-secret'),
-            'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
-            'two_factor_confirmed_at' => now(),
-        ])->save();
-
-        $this->followingRedirects()
-            ->post(route('login'), [
-                'email' => $user->email,
-                'password' => 'password',
-            ])
-            ->assertViewIs('auth.two-factor-challenge')
-            ->assertOk();
-    }
-}
+    $this->followingRedirects()
+        ->post(route('login'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ])
+        ->assertViewIs('auth.two-factor-challenge')
+        ->assertOk();
+})->skip(fn () => ! Features::canManageTwoFactorAuthentication(), 'Two-factor authentication is not enabled.');
