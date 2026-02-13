@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\UserRole;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class ImpersonationController extends Controller
@@ -16,7 +16,7 @@ class ImpersonationController extends Controller
     {
         $user = User::findOrFail($request->input('user_id'));
 
-        abort_if($user->role === UserRole::ADMIN, 403, 'Cannot impersonate an admin user.');
+        Gate::authorize('impersonate', $user);
 
         Log::info('Impersonation started', [
             'admin_id' => $request->user()->id,

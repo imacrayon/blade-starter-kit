@@ -49,5 +49,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin', function (User $user) {
             return $user->role === UserRole::ADMIN;
         });
+
+        Gate::define('impersonate', function (User $user, User $model) {
+            return $user->isNot($model) && $model->cannot('admin');
+        });
     }
 }

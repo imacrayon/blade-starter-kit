@@ -46,7 +46,7 @@
                                         <x-phosphor-pencil width="20" height="20" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" aria-hidden="true" />
                                         <span class="sr-only">Edit</span>
                                     </a>
-                                    @if($user->isNot(Auth::user()))
+                                    @can('impersonate', $user)
                                         <x-form method="post" action="{{ route('admin.impersonation.store') }}" class="contents">
                                             <input type="hidden" name="user_id" value="{{ $user->id }}">
                                             <button aria-describedby="user_{{ $user->id }}_name" title="Impersonate">
