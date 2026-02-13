@@ -17,7 +17,7 @@
             </x-button>
         </x-form>
         <x-form method="post" action="{{ route('logout') }}">
-            <x-button variant="link">{{ __('Log out') }}</x-button>
+            <x-button variant="link">{{ __('Log Out') }}</x-button>
         </x-form>
     </div>
 </div>
