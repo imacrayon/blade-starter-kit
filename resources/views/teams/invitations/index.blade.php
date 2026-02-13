@@ -40,21 +40,21 @@
                                     </p>
                                     <p class="text-xs text-gray-600">Sent <x-time :datetime="$invitation->updated_at" /></p>
                                 </div>
-                                <x-popover>
-                                    <x-button type="button" class="px-0 size-10">
-                                        <span class="sr-only">Open options</span>
-                                        <x-phosphor-dots-three-vertical width="20" height="20" class="text-gray-500" />
-                                    </x-button>
-                                    <x-slot:menu>
-                                        <x-form x-target="invitations" method="post" action="{{ route('invitations.resend', $invitation) }}">
-                                            <x-popover.item>Resend</x-popover.item>
-                                        </x-form>
-                                        <x-popover.separator />
-                                        <div class="px-2 pb-2">
-                                            <label for="invite_{{ $invitation->id }}_link" class="font-medium text-xs leading-none">{{ __('Invite link') }}</label>
+                                <x-button type="button" commandfor="invitation_{{ $invitation->id }}" command="toggle-popover" class="px-0 size-10">
+                                    <span class="sr-only">Open options</span>
+                                    <x-phosphor-dots-three-vertical width="20" height="20" class="text-gray-500" />
+                                </x-button>
+                                <x-popover id="invitation_{{ $invitation->id }}">
+                                    <x-form x-target="invitations" method="post" action="{{ route('invitations.resend', $invitation) }}">
+                                        <x-popover.item>Resend</x-popover.item>
+                                    </x-form>
+                                    <x-popover.separator />
+                                    <x-popover.group>
+                                        <x-field>
+                                            <x-label for="invite_{{ $invitation->id }}_link" class="font-medium text-xs leading-none" :value="__('Invite link')" />
                                             <div class="flex gap-1">
-                                                <input id="invite_{{ $invitation->id }}_link" readonly value="{{ $invitation->url() }}" class="text-gray-600 text-xs px-1 text-gray-600 bg-gray-50 rounded-md border border-gray-200">
-                                                <x-popover.item type="button" class="shrink-0 !w-auto"
+                                                <x-input size="sm" name="url" id="invite_{{ $invitation->id }}_link" readonly value="{{ $invitation->url() }}" />
+                                                <x-button size="sm" type="button" class="shrink-0 !w-auto"
                                                     x-data="{
                                                         copied: false,
                                                         copy() {
@@ -65,14 +65,14 @@
                                                     }"
                                                     x-on:click="copy"
                                                     x-text="copied ? 'Copied' : 'Copy'"
-                                                ></x-popover.item>
+                                                ></x-button>
                                             </div>
-                                        </div>
-                                        <x-popover.separator />
-                                        <x-form x-target="invitations" onsubmit="return confirm('This invitation will be deleted.')" method="delete" action="{{ route('invitations.destroy', $invitation) }}">
-                                            <x-popover.item>Delete</x-popover.item>
-                                        </x-form>
-                                    </x-slot:menu>
+                                        </x-field>
+                                    </x-popover.group>
+                                    <x-popover.separator />
+                                    <x-form x-target="invitations" onsubmit="return confirm('This invitation will be deleted.')" method="delete" action="{{ route('invitations.destroy', $invitation) }}">
+                                        <x-popover.item>Delete</x-popover.item>
+                                    </x-form>
                                 </x-popover>
                             </div>
                         </li>

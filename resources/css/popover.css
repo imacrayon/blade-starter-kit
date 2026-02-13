@@ -1,0 +1,25 @@
+[data-popover] {
+    inset: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    overflow: visible;
+}
+
+[data-popover][data-align="top"] {
+    top: anchor(bottom);
+    margin-top: .375rem;
+}
+
+[data-popover][data-align="bottom"] {
+    bottom: anchor(top);
+    margin-bottom: .375rem;
+}
+
+[data-popover][data-justify="right"] {
+    right: anchor(right);
+}
+
+[data-popover][data-justify="left"] {
+    left: anchor(left);
+}

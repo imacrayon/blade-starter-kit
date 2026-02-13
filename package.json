@@ -8,6 +8,7 @@
     "dependencies": {
         "@github/relative-time-element": "^4.4.8",
         "@imacrayon/alpine-ajax": "^0.12.0",
+        "@oddbird/css-anchor-positioning": "^0.9.0",
         "@tailwindcss/vite": "^4.0.7",
         "alpinejs": "^3.14.8",
         "autoprefixer": "^10.4.20",

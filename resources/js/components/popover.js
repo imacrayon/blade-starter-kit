@@ -1,59 +1,25 @@
-import Alpine from 'alpinejs'
-
-let root = {
-    'x-data'() {
-        return {
-            trigger: undefined,
-            menu: undefined,
-            expanded: false,
-            expand() {
-                this.expanded = true
-            },
-            close(focus = true) {
-                this.expanded = false
-                focus
-                    && !document.activeElement.isSameNode(this.trigger)
-                    && setTimeout(() => this.trigger.focus())
-            },
-            toggle() {
-                this.expanded ? this.close() : this.expand()
-            },
-        }
-    },
-    'x-id'() { return ['popover_trigger', 'popover_menu'] },
-    '@keydown.escape.stop.prevent'() {
-        this.$data.close()
-    },
+// Only load the polyfill in browsers that don't support CSS anchor positioning natively
+if (!('anchorName' in document.documentElement.style)) {
+    import('@oddbird/css-anchor-positioning')
 }
 
-let trigger = {
-    'x-init'() {
-        this.$data.trigger = this.$el
-    },
-    ':id'() { return this.$id('popover_trigger') },
-    ':aria-expanded'() { return this.$data.expanded },
-    ':aria-controls'() { return this.$data.expanded && this.$id('popover_menu') },
-    '@click'() { this.$data.toggle() },
-}
-
-let menu = {
-    'x-init'() {
-        this.$data.menu = this.$el
-    },
-    ':id'() { return this.$id('popover_menu') },
-    'x-show'() { return this.$data.expanded },
-    '@mousedown.window'($event) {
-        this.$data.expanded
-            && !this.$data.trigger.contains($event.target)
-            && !this.$el.contains($event.target)
-            && this.$data.close()
+// Set up CSS anchor positioning for popover triggers
+document.querySelectorAll('[data-popover]').forEach(menu => {
+    const trigger = document.querySelector(`[commandfor="${menu.id}"]`)
+    if (trigger) {
+        trigger.style.anchorName = `--${CSS.escape(menu.id)}`
+        menu.style.positionAnchor = `--${CSS.escape(menu.id)}`
     }
-}
-
-export default () => ({
-    init() {
-        Alpine.bind(this.$el, root)
-        Alpine.bind(this.$el.firstElementChild, trigger)
-        Alpine.bind(this.$el.firstElementChild.nextElementSibling, menu)
-    },
 })
+
+// Native Invoker Commands manage aria-expanded automatically;
+// only track it manually when the polyfill is active
+if (!('command' in HTMLButtonElement.prototype)) {
+    document.addEventListener('toggle', (e) => {
+        if (!e.target.hasAttribute('data-popover')) return
+        const isOpen = e.newState === 'open'
+        document.querySelectorAll(`[commandfor="${e.target.id}"]`).forEach(btn => {
+            btn.setAttribute('aria-expanded', isOpen)
+        })
+    }, true)
+}

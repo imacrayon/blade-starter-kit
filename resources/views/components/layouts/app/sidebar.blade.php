@@ -26,26 +26,24 @@
 
             <x-navlist>
                 <x-navlist.group>
-                    <x-popover justify="left">
-                        <button type="button" class="flex pl-3 h-10 w-full items-center rounded-lg text-gray-500 cursor-default hover:bg-gray-800/5 hover:text-gray-800 lg:h-8 dark:text-white/80 dark:hover:bg-white/7 dark:hover:text-white">
-                            <span class="text-sm font-medium leading-none">
-                                {{ auth()->user()->team->name }}
-                            </span>
-                            <span class="shrink-0 ml-auto size-8 flex justify-center items-center">
-                                <x-phosphor-caret-up-down aria-hidden="true" width="12" height="12" class="text-gray-400 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white" />
-                            </span>
-                        </button>
-                        <x-slot:menu class="w-max">
-                            <x-form method="put" action="{{ route('settings.team.update') }}" class="grid grid-cols-[auto_1fr]">
-                                @foreach(auth()->user()->teams as $team)
-                                    <x-popover.item class="col-span-2 grid grid-cols-subgrid" :before="$team->id === auth()->user()->team_id ? 'phosphor-check' : ''" name="team_id" value="{{ $team->id }}">{{ $team->name }}</x-popover.item>
-                                @endforeach
-                            </x-form>
-                            <x-popover.separator />
-                            <x-popover.item before="phosphor-plus" href="{{ route('teams.create') }}" :current="request()->routeIs('teams.create')">
-                                {{ __('New Team') }}
-                            </x-popover.item>
-                        </x-slot:menu>
+                    <button type="button" commandfor="sidebar_team_menu" command="toggle-popover" class="flex pl-3 h-10 w-full items-center rounded-lg text-gray-500 cursor-default hover:bg-gray-800/5 hover:text-gray-800 lg:h-8 dark:text-white/80 dark:hover:bg-white/7 dark:hover:text-white">
+                        <span class="text-sm font-medium leading-none">
+                            {{ auth()->user()->team->name }}
+                        </span>
+                        <span class="shrink-0 ml-auto size-8 flex justify-center items-center">
+                            <x-phosphor-caret-up-down aria-hidden="true" width="12" height="12" class="text-gray-400 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white" />
+                        </span>
+                    </button>
+                    <x-popover id="sidebar_team_menu" justify="left" class="w-max">
+                        <x-form method="put" action="{{ route('settings.team.update') }}" class="grid grid-cols-[auto_1fr]">
+                            @foreach(auth()->user()->teams as $team)
+                                <x-popover.item class="col-span-2 grid grid-cols-subgrid" :before="$team->id === auth()->user()->team_id ? 'phosphor-check' : ''" name="team_id" value="{{ $team->id }}">{{ $team->name }}</x-popover.item>
+                            @endforeach
+                        </x-form>
+                        <x-popover.separator />
+                        <x-popover.item before="phosphor-plus" href="{{ route('teams.create') }}" :current="request()->routeIs('teams.create')">
+                            {{ __('New Team') }}
+                        </x-popover.item>
                     </x-popover>
                     <x-navlist.item before="phosphor-user-list" href="{{ route('teams.show', auth()->user()->team) }}" :current="request()->routeIs('teams.show') && request()->route('team')->is(auth()->user()->team)">
                         {{ __('Members') }}
@@ -67,31 +65,29 @@
                 </x-navlist>
             @endcan
 
-            <x-popover align="bottom" justify="left">
-                <button type="button" class="w-full group flex items-center rounded-lg p-1 hover:bg-gray-800/5 dark:hover:bg-white/10">
+            <button type="button" commandfor="sidebar_user_menu" command="toggle-popover" class="w-full group flex items-center rounded-lg p-1 hover:bg-gray-800/5 dark:hover:bg-white/10">
+                <img class="size-8 flex-none rounded-full bg-gray-50" src="{{ auth()->user()->avatar }}" alt="">
+                <span class="ml-2 text-sm text-gray-500 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white font-medium truncate">
+                    {{ auth()->user()->name }}
+                </span>
+                <span class="shrink-0 ml-auto size-8 flex justify-center items-center">
+                    <x-phosphor-caret-up-down aria-hidden="true" width="16" height="16" class="text-gray-400 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white" />
+                </span>
+            </button>
+            <x-popover id="sidebar_user_menu" align="bottom" justify="left" class="w-max">
+                <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <img class="size-8 flex-none rounded-full bg-gray-50" src="{{ auth()->user()->avatar }}" alt="">
-                    <span class="ml-2 text-sm text-gray-500 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white font-medium truncate">
-                        {{ auth()->user()->name }}
-                    </span>
-                    <span class="shrink-0 ml-auto size-8 flex justify-center items-center">
-                        <x-phosphor-caret-up-down aria-hidden="true" width="16" height="16" class="text-gray-400 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white" />
-                    </span>
-                </button>
-                <x-slot:menu class="w-max">
-                    <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                        <img class="size-8 flex-none rounded-full bg-gray-50" src="{{ auth()->user()->avatar }}" alt="">
-                        <div class="grid flex-1 text-left text-sm leading-tight">
-                            <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                            <span class="truncate text-xs">{{ auth()->user()->email }}</span>
-                        </div>
+                    <div class="grid flex-1 text-left text-sm leading-tight">
+                        <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
+                        <span class="truncate text-xs">{{ auth()->user()->email }}</span>
                     </div>
-                    <x-popover.separator />
-                    <x-popover.item before="phosphor-gear-fine" href="{{ route('settings.profile.edit') }}">{{ __('Settings') }}</x-popover.item>
-                    <x-popover.separator />
-                    <x-form method="post" action="{{ route('logout') }}" class="w-full flex">
-                        <x-popover.item before="phosphor-sign-out">{{ __('Log Out') }}</x-popover.item>
-                    </x-form>
-                </x-slot:menu>
+                </div>
+                <x-popover.separator />
+                <x-popover.item before="phosphor-gear-fine" href="{{ route('settings.profile.edit') }}">{{ __('Settings') }}</x-popover.item>
+                <x-popover.separator />
+                <x-form method="post" action="{{ route('logout') }}" class="w-full flex">
+                    <x-popover.item before="phosphor-sign-out">{{ __('Log Out') }}</x-popover.item>
+                </x-form>
             </x-popover>
         </x-sidebar>
 
@@ -104,28 +100,26 @@
 
                 <x-spacer />
 
-                <x-popover align="top" justify="right">
-                    <button type="button" class="w-full group flex items-center rounded-lg p-1 hover:bg-gray-800/5 dark:hover:bg-white/10">
+                <button type="button" commandfor="mobile_user_menu" command="toggle-popover" class="w-full group flex items-center rounded-lg p-1 hover:bg-gray-800/5 dark:hover:bg-white/10">
+                    <img class="size-8 flex-none rounded-full bg-gray-50" src="{{ auth()->user()->avatar }}" alt="">
+                    <span class="shrink-0 ml-auto size-8 flex justify-center items-center">
+                        <x-phosphor-caret-down width="16" height="16" class="text-gray-400 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white" />
+                    </span>
+                </button>
+                <x-popover id="mobile_user_menu" align="top" justify="right">
+                    <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                         <img class="size-8 flex-none rounded-full bg-gray-50" src="{{ auth()->user()->avatar }}" alt="">
-                        <span class="shrink-0 ml-auto size-8 flex justify-center items-center">
-                            <x-phosphor-caret-down width="16" height="16" class="text-gray-400 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white" />
-                        </span>
-                    </button>
-                    <x-slot:menu>
-                        <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                            <img class="size-8 flex-none rounded-full bg-gray-50" src="{{ auth()->user()->avatar }}" alt="">
-                            <div class="grid flex-1 text-left text-sm leading-tight">
-                                <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                <span class="truncate text-xs">{{ auth()->user()->email }}</span>
-                            </div>
+                        <div class="grid flex-1 text-left text-sm leading-tight">
+                            <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
+                            <span class="truncate text-xs">{{ auth()->user()->email }}</span>
                         </div>
-                        <x-popover.separator />
-                        <x-popover.item before="phosphor-gear-fine" href="{{ route('settings.profile.edit') }}">{{ __('Settings') }}</x-popover.item>
-                        <x-popover.separator />
-                        <x-form method="post" action="{{ route('logout') }}" class="w-full flex">
-                            <x-popover.item before="phosphor-sign-out">{{ __('Log Out') }}</x-popover.item>
-                        </x-form>
-                    </x-slot:menu>
+                    </div>
+                    <x-popover.separator />
+                    <x-popover.item before="phosphor-gear-fine" href="{{ route('settings.profile.edit') }}">{{ __('Settings') }}</x-popover.item>
+                    <x-popover.separator />
+                    <x-form method="post" action="{{ route('logout') }}" class="w-full flex py-1.5">
+                        <x-popover.item before="phosphor-sign-out">{{ __('Log Out') }}</x-popover.item>
+                    </x-form>
                 </x-popover>
             </x-container>
         </x-header>

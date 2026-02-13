@@ -2,6 +2,7 @@
 @import './form.css' layer(components);
 @import './layout.css' layer(components);
 @import './modal.css' layer(components);
+@import './popover.css' layer(components);
 
 @source "../views";
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
