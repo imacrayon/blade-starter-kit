@@ -42,7 +42,7 @@
                 <x-subheading size="lg">{{ __('Delete your account and all of its resources') }}</x-subheading>
             </div>
 
-            <x-button type="button" variant="danger" x-init="" x-on:click="$dispatch('modal:open', 'confirm_user_deletion')">
+            <x-button type="button" variant="danger" commandfor="confirm_user_deletion" command="show-modal" aria-haspopup="dialog" aria-expanded="false">
                 {{ __('Delete account') }}
             </x-button>
 
@@ -58,7 +58,7 @@
                     <x-input type="password" :label="__('Password')" name="password" />
 
                     <div class="flex justify-end space-x-2">
-                        <x-button form="confirm_user_deletion_close">{{ __('Cancel') }}</x-button>
+                        <x-button type="button" commandfor="confirm_user_deletion" command="close">{{ __('Cancel') }}</x-button>
                         <x-button variant="danger">{{ __('Delete account') }}</x-button>
                     </div>
                 </x-form>
