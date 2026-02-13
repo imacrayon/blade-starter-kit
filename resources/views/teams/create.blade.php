@@ -4,7 +4,7 @@
         @include('teams._fields')
         <div class="flex gap-3">
             <x-button variant="primary">Save</x-button>
-            <x-button type="button" onclick="history.back()">Cancel</x-button>
+            <x-button href="{{ route('app') }}">Cancel</x-button>
         </div>
     </x-form>
 </x-layouts.app>

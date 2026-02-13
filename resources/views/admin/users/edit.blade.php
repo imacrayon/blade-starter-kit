@@ -9,7 +9,7 @@
 
         <div class="flex gap-3">
             <x-button variant="primary">{{ __('Update') }}</x-button>
-            <x-button type="button" onclick="history.back()">{{ __('Cancel') }}</x-button>
+            <x-button href="{{ route('admin.users.index') }}">{{ __('Cancel') }}</x-button>
             <x-spacer />
             <x-button variant="danger" form="delete_user">{{ __('Delete user') }}</x-button>
         </div>

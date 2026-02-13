@@ -10,7 +10,7 @@
 
                 <div class="flex items-center gap-3">
                     <x-button variant="primary">{{ __('Save') }}</x-button>
-                    <x-button href="{{ route('teams.invitations.index', $team) }}">{{ __('Cancel') }}</x-button>
+                    <x-button href="{{ route('teams.show', $team) }}">{{ __('Cancel') }}</x-button>
                 </div>
             </x-form>
         </x-card>
