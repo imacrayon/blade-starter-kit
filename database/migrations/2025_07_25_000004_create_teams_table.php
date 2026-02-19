@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('role');
             $table->timestamps();
+            $table->unique(['team_id', 'user_id']);
         });
 
         Schema::table('users', function (Blueprint $table) {
