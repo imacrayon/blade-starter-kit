@@ -28,7 +28,7 @@
                     @foreach($users as $user)
                         <x-table.row>
                             <x-table.cell>
-                                <div class="flex gap-2 items-center">
+                                <div class="flex gap-2 items-center whitespace-nowrap">
                                     <img width="28" height="28" role="presentation" class="flex-none rounded-full bg-gray-50" src="{{ $user->avatar }}" alt="">
                                     @can('update', $team)
                                         <x-link id="user_{{ $user->id }}_name" href="{{ route('teams.memberships.edit', [$team, $user]) }}" class="font-semibold">{{ $user->name }}</x-link>

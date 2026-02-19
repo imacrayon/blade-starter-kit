@@ -33,20 +33,20 @@
                                 </x-table.cell>
                                 <x-table.cell>
                                     <div class="flex justify-end gap-3">
-                                        <a href="{{ route('teams.show', $team) }}" aria-describedby="team_{{ $team->id }}_name" title="View">
-                                            <x-phosphor-eye width="20" height="20" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" aria-hidden="true" />
-                                            <span class="sr-only">View</span>
-                                        </a>
-                                        <a href="{{ route('teams.edit', $team) }}" aria-describedby="team_{{ $team->id }}_name" title="Edit">
-                                            <x-phosphor-pencil width="20" height="20" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" aria-hidden="true" />
-                                            <span class="sr-only">Edit</span>
-                                        </a>
-                                        <x-form x-target="teams" onsubmit="return confirm('This team will be deleted.')" method="delete" action="{{ route('admin.teams.destroy', $team) }}" class="contents">
-                                            <button title="Delete" aria-describedby="team_{{ $team->id }}_name">
-                                                <x-phosphor-trash width="20" height="20" class="text-gray-400 hover:text-red-600 dark:hover:text-red-400" aria-hidden="true" />
-                                                <span class="sr-only">Delete</span>
-                                            </button>
-                                        </x-form>
+                                        <x-button icon size="xs" type="button" commandfor="team_{{ $team->id }}_actions" command="toggle-popover">
+                                            <span class="sr-only">Open options</span>
+                                            <x-phosphor-dots-three-vertical width="20" height="20" class="text-gray-500" />
+                                        </x-button>
+                                        <x-popover id="team_{{ $team->id }}_actions">
+                                            <x-popover.item href="{{ route('teams.edit', $team) }}" before="phosphor-pencil" aria-describedby="team_{{ $team->id }}_name">
+                                                {{ __('Edit') }}
+                                            </x-popover.item>
+                                            <x-form x-target="teams" onsubmit="return confirm('This team will be deleted.')" method="delete" action="{{ route('admin.teams.destroy', $team) }}" class="contents">
+                                                <x-popover.item before="phosphor-trash" aria-describedby="team_{{ $team->id }}_name">
+                                                    {{ __('Delete') }}
+                                                </x-popover.item>
+                                            </x-form>
+                                        </x-popover>
                                     </div>
                                 </x-table.cell>
                             </x-table.row>

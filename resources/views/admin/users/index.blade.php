@@ -23,7 +23,7 @@
                     @foreach($users as $user)
                         <x-table.row>
                             <x-table.cell>
-                                <div class="flex gap-2 items-center">
+                                <div class="flex gap-2 items-center whitespace-nowrap">
                                     <img width="28" height="28" role="presentation" class="flex-none rounded-full bg-gray-50" src="{{ $user->avatar }}" alt="">
                                     <x-link id="user_{{ $user->id }}_name" href="{{ route('admin.users.edit', $user) }}" class="font-semibold">{{ $user->name }}</x-link>
                                 </div>
@@ -42,27 +42,28 @@
                             </x-table.cell>
                             <x-table.cell>
                                 <div class="flex justify-end gap-3">
-                                    <a href="{{ route('admin.users.edit', $user) }}" aria-describedby="user_{{ $user->id }}_name" title="Edit">
-                                        <x-phosphor-pencil width="20" height="20" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" aria-hidden="true" />
-                                        <span class="sr-only">Edit</span>
-                                    </a>
-                                    @can('impersonate', $user)
-                                        <x-form method="post" action="{{ route('admin.impersonation.store') }}" class="contents">
-                                            <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                            <button aria-describedby="user_{{ $user->id }}_name" title="Impersonate">
-                                                <x-phosphor-user-switch width="20" height="20" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" aria-hidden="true" />
-                                                <span class="sr-only">Impersonate</span>
-                                            </button>
+                                    <x-button icon size="xs" type="button" commandfor="user_{{ $user->id }}_actions" command="toggle-popover">
+                                        <span class="sr-only">Open options</span>
+                                        <x-phosphor-dots-three-vertical width="20" height="20" class="text-gray-500" />
+                                    </x-button>
+                                    <x-popover id="user_{{ $user->id }}_actions">
+                                        <x-popover.item href="{{ route('admin.users.edit', $user) }}" before="phosphor-pencil" aria-describedby="user_{{ $user->id }}_name">
+                                            {{ __('Edit') }}
+                                        </x-popover.item>
+                                        @can('impersonate', $user)
+                                            <x-form method="post" action="{{ route('admin.impersonation.store') }}" class="contents">
+                                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                                <x-popover.item aria-describedby="user_{{ $user->id }}_name" before="phosphor-user-switch">
+                                                    {{ __('Impersonate') }}
+                                                </x-popover.item>
+                                            </x-form>
+                                        @endif
+                                        <x-form class="contents" x-target="users" onsubmit="return confirm('This user will be deleted.')" method="delete" action="{{ route('admin.users.destroy', $user) }}">
+                                            <x-popover.item before="phosphor-trash">
+                                                {{ __('Delete') }}
+                                            </x-popover.item>
                                         </x-form>
-                                    @else
-                                        <x-phosphor-user-switch width="20" height="20" class="text-gray-200 dark:text-gray-600" aria-hidden="true" />
-                                    @endif
-                                    <x-form class="contents" x-target="users" onsubmit="return confirm('This user will be deleted.')" method="delete" action="{{ route('admin.users.destroy', $user) }}">
-                                        <button title="Delete">
-                                            <x-phosphor-trash width="20" height="20" class="text-gray-400 hover:text-red-600 dark:hover:text-red-400" aria-hidden="true" />
-                                            <span class="sr-only">Delete</span>
-                                        </button>
-                                    </x-form>
+                                    </x-popover>
                                 </div>
                             </x-table.cell>
                         </x-table.row>
