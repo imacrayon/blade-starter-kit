@@ -10,6 +10,7 @@ $classes = [
     'rounded-md',
     'text-left text-sm font-medium',
     'text-gray-800 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-600',
+    'disabled:opacity-75 dark:disabled:opacity-75 disabled:cursor-default disabled:pointer-events-none',
 ];
 @endphp
 

@@ -9,6 +9,7 @@
     'rounded-lg shadow-xs',
     'border border-gray-200 dark:border-gray-600',
     'bg-white dark:bg-gray-700',
+    'text-gray-700 dark:text-gray-300',
     'focus:outline-hidden',
 ]) }}>
     {{ $slot }}
