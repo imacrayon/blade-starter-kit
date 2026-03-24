@@ -1,9 +1,14 @@
 import 'instant.page'
 import './components/modal'
+import '@github/relative-time-element'
 import Alpine from 'alpinejs'
 import ajax from '@imacrayon/alpine-ajax'
-import './components/popover'
-import '@github/relative-time-element'
+if (!('command' in HTMLButtonElement.prototype)) {
+    import('./polyfills/invokers')
+}
+if (!('anchorName' in document.documentElement.style)) {
+    import('./polyfills/anchor-positioning')
+}
 
 Alpine.plugin(ajax)
 Alpine.start()

@@ -21,5 +21,4 @@
         </div>
         <?php endif; ?>
     </div>
-    <x-separator class="mt-6" />
 </div>

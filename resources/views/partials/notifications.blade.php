@@ -1,4 +1,4 @@
-<div class="[grid-area:banner]">
+<div>
     <section role="status" class="sr-only" id="announcements" x-sync>
         @foreach(Session::pull('announcements', []) as $notification)
             <p>{{ $notification['content'] }}</p>

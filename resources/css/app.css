@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import './form.css' layer(components);
-@import './layout.css' layer(components);
 @import './modal.css' layer(components);
 @import './popover.css' layer(components);
 

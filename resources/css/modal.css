@@ -1,7 +1,6 @@
 dialog,
 dialog::backdrop {
-    opacity: 0;
-    transition: all 0.075s allow-discrete;
+    transition: all 150ms allow-discrete;
 }
 
 dialog {
@@ -12,7 +11,13 @@ dialog {
     box-shadow: var(--shadow-lg);
     border-radius: var(--radius-xl);
     border: 1px solid transparent;
-    transform: scale(0.95);
+    translate: 0 0;
+    opacity: 1;
+
+    &:not([open]) {
+        translate: -100% 0;
+        opacity: 0;
+    }
 
     @variant dark {
         background: var(--color-gray-800);
@@ -20,25 +25,13 @@ dialog {
     }
 }
 
-dialog[open],
-dialog[open]::backdrop {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-    transition: all 0.15s allow-discrete;
-}
-
 @starting-style {
-
-    dialog[open],
-    dialog[open]::backdrop {
+    dialog[open] {
+        translate: -100% 0;
         opacity: 0;
     }
-
-    dialog[open] {
-        transform: scale(0.95);
-    }
 }
 
-dialog::backdrop {
+dialog dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.25);
 }
