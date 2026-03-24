@@ -8,7 +8,9 @@
     <x-form method="post" :action="route('register')" class="space-y-6">
         <input type="hidden" name="code" value="{{ request('code') }}" />
 
-        <x-input :label="__('Full name')" name="name" required autofocus autocomplete="name" />
+        <x-input :label="__('First name')" name="first_name" required autofocus autocomplete="given-name" />
+
+        <x-input :label="__('Last name')" name="last_name" required autocomplete="family-name" />
 
         <x-input type="email" :label="__('Email address')" name="email" required autocomplete="email" />
 

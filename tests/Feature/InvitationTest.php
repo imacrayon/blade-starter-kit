@@ -94,7 +94,8 @@ class InvitationTest extends TestCase
         ]);
 
         $response = $this->post($invitation->url(), [
-            'name' => 'Test User',
+            'first_name' => 'Test',
+            'last_name' => 'User',
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',

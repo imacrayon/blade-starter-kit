@@ -29,7 +29,8 @@ class CreateNewUser implements CreatesNewUsers
 
         return DB::transaction(function () use ($input, $invitation) {
             $user = User::create([
-                'name' => $input['name'],
+                'first_name' => $input['first_name'],
+                'last_name' => $input['last_name'],
                 'email' => $input['email'],
                 'role' => UserRole::MEMBER,
                 'password' => Hash::make($input['password']),

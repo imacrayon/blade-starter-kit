@@ -37,7 +37,8 @@ class TeamController extends Controller
                         ->where('memberships.team_id', $team->id)
                         ->select('users.*', 'memberships.role as membership_role')
                         ->orderBy('membership_role')
-                        ->orderBy('name');
+                        ->orderBy('first_name')
+                        ->orderBy('last_name');
                 })
                 ->paginate(),
         ]);

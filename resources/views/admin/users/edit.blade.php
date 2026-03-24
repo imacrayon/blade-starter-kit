@@ -1,7 +1,9 @@
 <x-layouts.app :title="__('Edit user')">
     <x-headbar :title="__('Edit user')" />
     <x-form method="put" action="{{ route('admin.users.update', $user) }}" autocomplete="off" class="mt-6 max-w-xl space-y-6">
-        <x-input :label="__('Name')" name="name" type="text" :value="$user->name" required autofocus autocomplete="name" />
+        <x-input :label="__('First name')" name="first_name" type="text" :value="$user->first_name" required autofocus autocomplete="given-name" />
+
+        <x-input :label="__('Last name')" name="last_name" type="text" :value="$user->last_name" required autocomplete="family-name" />
 
         <x-input type="email" :label="__('Email')" name="email" :value="$user->email" required autocomplete="email" />
 

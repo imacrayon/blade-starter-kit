@@ -16,7 +16,8 @@ class UserController extends Controller
         return view('admin.users.index', [
             'users' => User::search($request->q)
                 ->query(fn ($q) => $q->withCount('teams'))
-                ->orderBy('name')
+                ->orderBy('last_name')
+                ->orderBy('first_name')
                 ->paginate(),
         ]);
     }
@@ -31,7 +32,8 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user->update($request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'role' => ['required', Rule::enum(UserRole::class)],
         ]));

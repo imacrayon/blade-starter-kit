@@ -1,7 +1,9 @@
 <x-layouts.app :title="__('Profile | Settings')">
     <x-settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
         <x-form method="put" action="{{ route('settings.profile.update') }}" class="my-6 w-full space-y-6">
-            <x-input type="text" :label="__('Name')" :value="$user->name" name="name" required autofocus autocomplete="name" />
+            <x-input type="text" :label="__('First name')" :value="$user->first_name" name="first_name" required autofocus autocomplete="given-name" />
+
+            <x-input type="text" :label="__('Last name')" :value="$user->last_name" name="last_name" required autocomplete="family-name" />
 
             <div>
                 <x-input type="email" :label="__('Email')" :value="$user->email" name="email" required autocomplete="email" />
