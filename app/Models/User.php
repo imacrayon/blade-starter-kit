@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\UserRole;
+use Database\Factories\UserFactory;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,7 @@ use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, HasTeams, MustVerifyEmail, Notifiable, Searchable, TwoFactorAuthenticatable;
 
     protected $hidden = [

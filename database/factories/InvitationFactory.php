@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Invitation;
 use App\Models\Team;
 use App\Models\User;
 use App\UserRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Invitation>
+ * @extends Factory<Invitation>
  */
 class InvitationFactory extends Factory
 {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Mail\InvitationMail;
 use App\UserRole;
+use Database\Factories\InvitationFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Support\Str;
 
 class Invitation extends Model
 {
-    /** @use HasFactory<\Database\Factories\InvitationFactory> */
+    /** @use HasFactory<InvitationFactory> */
     use HasFactory;
 
     protected function casts(): array
