@@ -34,7 +34,7 @@ class InvitationTest extends TestCase
             'role' => UserRole::MEMBER->value,
             'team_id' => $user->team->id,
         ]);
-        Mail::assertSent(InvitationMail::class, function ($mail) {
+        Mail::assertQueued(InvitationMail::class, function ($mail) {
             return $mail->hasTo('invitee@example.com');
         });
     }
@@ -54,7 +54,7 @@ class InvitationTest extends TestCase
             ->assertSessionHasNoErrors()
             ->assertRedirectBack();
 
-        Mail::assertSent(InvitationMail::class, function ($mail) use ($invitation) {
+        Mail::assertQueued(InvitationMail::class, function ($mail) use ($invitation) {
             return $mail->hasTo($invitation->email) && $mail->invitation->is($invitation);
         });
     }
