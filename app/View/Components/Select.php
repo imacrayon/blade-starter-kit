@@ -23,7 +23,14 @@ class Select extends Control
 
     public function isSelected($option): bool
     {
-        return collect($this->value)->contains($option);
+        $value = $this->value;
+        if ($value instanceof \UnitEnum) {
+            $value = $value->value;
+        } elseif (is_array($value)) {
+            $value = array_map(fn ($v) => $v instanceof \UnitEnum ? $v->value : $v, $value);
+        }
+
+        return collect($value)->contains($option);
     }
 
     public function render()
