@@ -5,7 +5,7 @@
 ])
 
 <?php if ($label): ?>
-<div class="flex gap-x-2.5" onclick="document.getElementById('{{ $id }}').checked = true">
+<div class="flex gap-x-2.5">
     {{ $slot }}
     <div>
         <x-label :for="$id" :value="$label" />

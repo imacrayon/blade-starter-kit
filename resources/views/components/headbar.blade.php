@@ -9,7 +9,7 @@
             <?php if (!isset($head)) : ?>
                 <x-heading size="xl" level="1">{{ $title }}</x-heading>
                 <?php if ($subtitle) : ?>
-                    <x-subheading size="lg">{{ $subtitle }}</x-subheading>
+                    <x-subheading>{{ $subtitle }}</x-subheading>
                 <?php endif; ?>
             <?php else: ?>
                 {{ $head }}

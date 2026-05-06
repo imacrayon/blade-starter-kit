@@ -6,9 +6,9 @@
 @php
 $classes = [
     match ($size) {
-        'base' => 'text-sm [&:has(+[data-subheading])]:mb-2 [[data-subheading]+&]:mt-2',
-        'lg' => 'text-base [&:has(+[data-subheading])]:mb-2 [[data-subheading]+&]:mt-2',
-        'xl' => 'text-2xl [&:has(+[data-subheading])]:mb-2 [[data-subheading]+&]:mt-2',
+        'base' => 'text-sm [&:has(+[data-subheading])]:mb-1 [[data-subheading]+&]:mt-1',
+        'lg' => 'text-base [&:has(+[data-subheading])]:mb-1 [[data-subheading]+&]:mt-1',
+        'xl' => 'text-2xl [&:has(+[data-subheading])]:mb-1 [[data-subheading]+&]:mt-1',
     },
     'font-medium',
     '[:where(&)]:text-gray-800 [:where(&)]:dark:text-white'

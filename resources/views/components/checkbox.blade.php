@@ -4,7 +4,7 @@ $classes = [
     'shrink-0 size-5 rounded-md',
     'text-sm text-gray-700 dark:text-gray-800',
     'shadow-xs disabled:opacity-75 disabled:checked:opacity-50 disabled:shadow-none checked:shadow-none indeterminate:shadow-none',
-    'border border-gray-300 dark:border-white/10 outline-offset-2',
+    'border border-gray-300 dark:border-white/10 outline-offset-1',
     'disabled:border-gray-200 dark:disabled:border-white/5',
     'checked:border-transparent indeterminate:border-transparent',
     'disabled:checked:border-transparent disabled:indeterminate:border-transparent',

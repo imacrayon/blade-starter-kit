@@ -10,7 +10,7 @@
 
 @php
 $classes = [
-    'inline-flex items-center justify-center gap-2',
+    'inline-flex items-center justify-center gap-2 outline-offset-1',
     'relative aria-pressed:z-10', // Button group behavior
     'font-medium whitespace-nowrap',
     'disabled:opacity-75 dark:disabled:opacity-75 disabled:cursor-default disabled:pointer-events-none',

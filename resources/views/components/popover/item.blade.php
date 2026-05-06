@@ -9,7 +9,7 @@ $classes = [
     'group flex items-center gap-2 px-2 py-2 lg:py-1.5 w-full',
     'rounded-md',
     'text-left text-sm font-medium',
-    'text-gray-800 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-600',
+    'text-gray-800 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-800',
     'disabled:opacity-75 dark:disabled:opacity-75 disabled:cursor-default disabled:pointer-events-none',
 ];
 @endphp

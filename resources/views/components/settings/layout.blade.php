@@ -15,7 +15,7 @@
 
     <div class="flex-1 self-stretch max-md:pt-6">
         <x-heading level="2" size="lg">{{ $heading ?? '' }}</x-heading>
-        <x-subheading level="2" size="lg">{{ $subheading ?? '' }}</x-subheading>
+        <x-subheading level="2">{{ $subheading ?? '' }}</x-subheading>
 
         <div class="mt-5 w-full max-w-lg">
             {{ $slot }}
