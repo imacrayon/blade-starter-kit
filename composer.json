@@ -13,7 +13,7 @@
         "php": "^8.4",
         "codeat3/blade-phosphor-icons": "^2.3",
         "laravel/fortify": "^1.34",
-        "laravel/framework": "^13.0",
+        "laravel/framework": "^13.7",
         "laravel/scout": "^11.1",
         "laravel/tinker": "^3.0"
     },
