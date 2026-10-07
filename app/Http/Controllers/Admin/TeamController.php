@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Team;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TeamController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         return view('admin.teams.index', [
             'teams' => Team::search($request->q)
@@ -18,23 +20,7 @@ class TeamController extends Controller
         ]);
     }
 
-    public function create()
-    {
-        return view('admin.teams.create', [
-            'team' => new Team,
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-        $team = Team::create($request->validate([
-            'name' => ['required', 'string', 'max:255'],
-        ]));
-
-        return to_route('teams.show', $team);
-    }
-
-    public function destroy(Team $team)
+    public function destroy(Team $team): RedirectResponse
     {
         $team->delete();
 

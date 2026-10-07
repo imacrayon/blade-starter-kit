@@ -1,5 +1,11 @@
 <x-layouts.auth :title="__('Verification required')">
 <div class="mt-4 space-y-6">
+    @if (session()->pull('invitation_invalid'))
+        <x-text class="text-center font-medium">
+            {{ __('Your invitation is no longer valid. Ask the team admin to invite you again.') }}
+        </x-text>
+    @endif
+
     <x-text class="text-center">
         {{ __('Please verify your email address by clicking on the link we just emailed to you.') }}
     </x-text>

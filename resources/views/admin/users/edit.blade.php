@@ -9,6 +9,8 @@
 
         <x-select :label="__('Role')" name="role" :options="App\UserRole::class"  :value="$user->role" required />
 
+        <x-error for="team" />
+
         <div class="flex gap-3">
             <x-button variant="primary">{{ __('Update') }}</x-button>
             <x-button href="{{ route('admin.users.index') }}">{{ __('Cancel') }}</x-button>
@@ -17,5 +19,5 @@
         </div>
     </x-form>
 
-    <x-form id="delete_user" method="delete" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('This user will be deleted.')" />
+    <x-form id="delete_user" method="delete" action="{{ route('admin.users.destroy', $user) }}" :confirm="__('This user will be deleted.')" />
 </x-layouts.app>

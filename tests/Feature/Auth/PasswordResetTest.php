@@ -16,7 +16,7 @@ class PasswordResetTest extends TestCase
     {
         $response = $this->get(route('password.request'));
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_reset_password_link_can_be_requested(): void
@@ -41,7 +41,9 @@ class PasswordResetTest extends TestCase
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
             $response = $this->get(route('password.reset', ['token' => $notification->token]));
 
-            $response->assertStatus(200);
+            $response->assertOk()
+                ->assertSee('Use at least 8 characters.')
+                ->assertSee('passwordrules="minlength: 8;"', false);
 
             return true;
         });
@@ -69,5 +71,19 @@ class PasswordResetTest extends TestCase
 
             return true;
         });
+    }
+
+    public function test_password_cannot_be_reset_with_invalid_token(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post(route('password.update'), [
+            'token' => 'invalid-token',
+            'email' => $user->email,
+            'password' => 'newpassword123',
+            'password_confirmation' => 'newpassword123',
+        ]);
+
+        $response->assertSessionHasErrors('email');
     }
 }

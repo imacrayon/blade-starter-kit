@@ -3,22 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Team;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class TeamController extends Controller
 {
-    public function create()
+    public function create(): View
     {
         return view('teams.create', [
             'team' => new Team,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $team = Team::forUser($request->user(), $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -27,26 +26,14 @@ class TeamController extends Controller
         return to_route('teams.show', $team);
     }
 
-    public function show(Request $request, Team $team): View
+    public function show(Team $team): View
     {
-        return view('teams.show', [
-            'team' => $team,
-            'users' => User::search($request->q)
-                ->query(function ($query) use ($team) {
-                    $query->join('memberships', 'users.id', '=', 'memberships.user_id')
-                        ->where('memberships.team_id', $team->id)
-                        ->select('users.*', 'memberships.role as membership_role')
-                        ->orderBy('membership_role')
-                        ->orderBy('first_name')
-                        ->orderBy('last_name');
-                })
-                ->paginate(),
-        ]);
+        return view('teams.show', ['team' => $team]);
     }
 
     public function edit(Team $team): View
     {
-        return view('teams.edit', ['team' => $team]);
+        return view('teams.edit', ['team' => $team->loadCount(Team::memberCounts())]);
     }
 
     public function update(Request $request, Team $team): RedirectResponse
@@ -55,17 +42,19 @@ class TeamController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]));
 
-        return to_route('teams.show', $team);
+        return to_route('teams.members.index', $team);
     }
 
-    public function destroy(Team $team)
+    public function destroy(Request $request, Team $team): RedirectResponse
     {
-        DB::transaction(function () use ($team) {
-            $team->users()->where('users.team_id', $team->id)->update(['users.team_id' => null]);
-            $team->users()->detach();
-            $team->delete();
-        });
+        $request->validate([
+            'team_name' => ['required', Rule::in([$team->name])],
+        ], [
+            'team_name.in' => __('The team name does not match.'),
+        ]);
 
-        return to_route('admin.teams.index');
+        $team->delete();
+
+        return to_route('app');
     }
 }

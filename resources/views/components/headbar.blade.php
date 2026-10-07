@@ -1,3 +1,5 @@
+@blaze
+
 @props([
     'title',
     'subtitle' => null,

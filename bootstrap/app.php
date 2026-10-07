@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Session\TokenMismatchException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -16,8 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (HttpException $e) {
-            if ($e->getPrevious() instanceof TokenMismatchException) {
+        $exceptions->render(function (HttpException $e, Request $request) {
+            if ($e->getPrevious() instanceof TokenMismatchException && ! $request->expectsJson()) {
                 return redirect()->back()->with('status', __('Your session has expired, try again.'));
             }
         });

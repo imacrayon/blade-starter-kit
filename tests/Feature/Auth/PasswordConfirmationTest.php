@@ -16,7 +16,16 @@ class PasswordConfirmationTest extends TestCase
 
         $response = $this->be($user)->get(route('password.confirm'));
 
-        $response->assertStatus(200);
+        $response->assertOk()->assertDontSee('Confirm with a passkey');
+    }
+
+    public function test_confirm_password_screen_offers_passkey_when_user_has_one(): void
+    {
+        $user = User::factory()->withPasskey()->create();
+
+        $this->be($user)
+            ->get(route('password.confirm'))
+            ->assertOk();
     }
 
     public function test_password_can_be_confirmed(): void

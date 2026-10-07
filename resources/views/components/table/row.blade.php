@@ -1,3 +1,5 @@
-<tr>
+@blaze(fold: true)
+
+<tr {{ $attributes }}>
     {{ $slot }}
 </tr>

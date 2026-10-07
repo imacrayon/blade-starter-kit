@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\UserRole;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         return view('admin.users.index', [
             'users' => User::search($request->q)
@@ -22,14 +23,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function edit(User $user)
+    public function edit(User $user): View
     {
         return view('admin.users.edit', [
             'user' => $user,
         ]);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $user->update($request->validate([
             'first_name' => ['required', 'string', 'max:255'],
@@ -41,12 +42,9 @@ class UserController extends Controller
         return to_route('admin.users.index');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
-        DB::transaction(function () use ($user) {
-            $user->teams()->detach();
-            $user->delete();
-        });
+        $user->delete();
 
         return to_route('admin.users.index');
     }

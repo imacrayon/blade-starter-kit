@@ -26,13 +26,26 @@ class ImpersonationTest extends TestCase
         $this->assertEquals($target->name, session('impersonating'));
     }
 
+    public function test_impersonator_sees_a_stop_impersonating_banner(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $target = User::factory()->create();
+
+        $this
+            ->be($admin)
+            ->post(route('admin.impersonation.store'), ['user_id' => $target->id]);
+
+        $this->get(route('app'))
+            ->assertSee(route('impersonation.destroy'));
+    }
+
     public function test_impersonator_can_stop_impersonating(): void
     {
         $admin = User::factory()->admin()->create();
         $target = User::factory()->create();
 
         $this
-            ->actingAs($admin)
+            ->be($admin)
             ->post(route('admin.impersonation.store'), [
                 'user_id' => $target->id,
             ]);
@@ -45,6 +58,23 @@ class ImpersonationTest extends TestCase
         $this->assertAuthenticatedAs($admin);
         $this->assertNull(session('impersonator_id'));
         $this->assertNull(session('impersonating'));
+    }
+
+    public function test_impersonator_can_stop_impersonating_an_unverified_user(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $target = User::factory()->unverified()->create();
+
+        $this
+            ->be($admin)
+            ->post(route('admin.impersonation.store'), ['user_id' => $target->id]);
+
+        $this->get(route('verification.notice'))
+            ->assertSee(route('impersonation.destroy'));
+
+        $this->delete(route('impersonation.destroy'))
+            ->assertRedirect(route('admin.users.index'));
+        $this->assertAuthenticatedAs($admin);
     }
 
     public function test_non_admin_cannot_impersonate(): void
@@ -62,7 +92,7 @@ class ImpersonationTest extends TestCase
     public function test_cannot_stop_impersonating_if_not_impersonating(): void
     {
         $user = User::factory()->admin()->create();
-        $this->actingAs($user);
+        $this->be($user);
         $response = $this->delete(route('impersonation.destroy'));
         $response->assertNotFound();
     }

@@ -22,9 +22,11 @@
         <x-input
             type="password"
             :label="__('Password')"
+            :description="\App\Field::passwordRequirementsText()"
             name="password"
             required
             autocomplete="new-password"
+            :passwordrules="\App\Field::passwordRules()"
         />
 
         <!-- Confirm Password -->
@@ -34,6 +36,7 @@
             name="password_confirmation"
             required
             autocomplete="new-password"
+            :passwordrules="\App\Field::passwordRules()"
         />
 
         <x-button variant="primary" class="w-full">{{ __('Reset password') }}</x-button>

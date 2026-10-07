@@ -1,3 +1,5 @@
+@blaze
+
 <div {{ $attributes->class([
     'flex -space-x-px group/button',
     '[&>button:not(:first-child):not(:last-child)]:rounded-none',

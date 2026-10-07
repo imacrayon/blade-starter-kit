@@ -13,9 +13,8 @@ return new class extends Migration
             $table->string('code', 64)->unique();
             $table->string('email');
             $table->string('role');
-            $table->foreignId('sender_id')->constrained('users');
-            $table->timestamp('expires_at')->nullable();
-            $table->timestamp('accepted_at')->nullable();
+            $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
+            $table->timestamp('expires_at');
             $table->timestamps();
         });
     }

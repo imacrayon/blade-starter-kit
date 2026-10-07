@@ -1,6 +1,8 @@
+@blaze
+
 <div {{ $attributes->class([
     'shrink-0',
     'border-0 [print-color-adjust:exact]',
-    'bg-gray-800/5 dark:bg-white/5',
+    'bg-gray-800/5 dark:bg-gray-900',
     'h-px w-full',
 ]) }}></div>

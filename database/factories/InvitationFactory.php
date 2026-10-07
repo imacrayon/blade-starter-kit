@@ -20,6 +20,7 @@ class InvitationFactory extends Factory
             'role' => UserRole::MEMBER,
             'team_id' => Team::factory(),
             'sender_id' => User::factory(),
+            'expires_at' => now()->addWeek(),
         ];
     }
 }

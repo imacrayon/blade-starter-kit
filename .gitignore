@@ -1,7 +1,7 @@
 /.phpunit.cache
-/.claude/settings.local.json
 /node_modules
 /public/build
+/public/fonts-manifest.dev.json
 /public/hot
 /public/storage
 /storage/*.key
@@ -22,3 +22,18 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/.agents
+/.amp
+/.claude
+/.cursor
+/.factory
+/.grok
+/.junie
+/.kiro
+/.pi
+/.mcp.json
+/AGENTS.md
+/CLAUDE.md
+/boost.json
+/opencode.json
+/opencode.jsonc

@@ -25,4 +25,16 @@ class TeamPolicy
     {
         return $this->update($user, $team);
     }
+
+    public function switch(User $user, Team $team): bool
+    {
+        return $user->belongsToTeam($team);
+    }
+
+    public function leave(User $user, Team $team): bool
+    {
+        return $user->belongsToTeam($team)
+            && $user->teams->count() > 1
+            && ! $team->needsAnotherAdmin($user);
+    }
 }

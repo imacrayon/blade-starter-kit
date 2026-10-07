@@ -52,4 +52,15 @@ class UserFactory extends Factory
             'role' => UserRole::ADMIN,
         ]);
     }
+
+    public function withPasskey(string $name = 'MacBook Pro'): static
+    {
+        return $this->afterCreating(function (User $user) use ($name) {
+            $user->passkeys()->create([
+                'name' => $name,
+                'credential_id' => Str::random(),
+                'credential' => ['id' => 'credential', 'type' => 'public-key'],
+            ]);
+        });
+    }
 }

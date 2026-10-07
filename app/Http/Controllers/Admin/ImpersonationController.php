@@ -14,7 +14,7 @@ class ImpersonationController extends Controller
 {
     public function store(Request $request): RedirectResponse
     {
-        $user = User::findOrFail($request->input('user_id'));
+        $user = User::findOrFail($request->integer('user_id'));
 
         Gate::authorize('impersonate', $user);
 
@@ -37,7 +37,7 @@ class ImpersonationController extends Controller
     {
         abort_if($request->session()->missing('impersonator_id'), 404);
 
-        $impersonator = User::findOrFail($request->session()->pull('impersonator_id'));
+        $impersonator = User::whereKey($request->session()->pull('impersonator_id'))->firstOrFail();
 
         Log::info('Impersonation ended', [
             'admin_id' => $impersonator->id,

@@ -1,21 +1,21 @@
 <x-layouts.app :title="__('Invitations')">
     <x-headbar :title="__('Invitations')" />
-    <x-section class="mt-6">
+    <x-panel class="mt-6">
         <x-heading level="2">{{ __('New Invitation') }}</x-heading>
         <x-card>
-            <x-form method="post" action="{{ route('teams.invitations.store', $team) }}" autocomplete="off" class="max-w-lg space-y-6">
+            <x-form method="post" action="{{ route('teams.invitations.store') }}" autocomplete="off" class="max-w-lg space-y-6">
                 <x-input :label="__('Email')" name="email" type="email" required />
 
                 <x-select :label="__('Role')" name="role" :options="App\UserRole::class" :value="$invitation->role" required />
 
                 <div class="flex items-center gap-3">
                     <x-button variant="primary">{{ __('Save') }}</x-button>
-                    <x-button href="{{ route('teams.show', $team) }}">{{ __('Cancel') }}</x-button>
+                    <x-button href="{{ route('teams.members.index') }}">{{ __('Cancel') }}</x-button>
                 </div>
             </x-form>
         </x-card>
-    </x-section>
-    <x-section id="invitations" class="mt-6">
+    </x-panel>
+    <x-panel id="invitations" class="mt-6">
         <x-heading level="2">{{ __('Pending Invitations') }}</x-heading>
         @if($invitations->isNotEmpty())
             <x-table>
@@ -49,7 +49,7 @@
                                         <x-phosphor-dots-three-vertical width="20" height="20" class="text-gray-500" />
                                     </x-button>
                                     <x-popover id="invitation_{{ $invitation->id }}_actions">
-                                        <x-form x-target="invitations" method="post" action="{{ route('invitations.resend', $invitation) }}">
+                                        <x-form x-target="invitations" method="post" action="{{ route('teams.invitations.resend', $invitation) }}">
                                             <x-popover.item before="phosphor-arrows-clockwise">Resend</x-popover.item>
                                         </x-form>
                                         <x-popover.separator />
@@ -74,7 +74,7 @@
                                             </x-field>
                                         </x-popover.group>
                                         <x-popover.separator />
-                                        <x-form x-target="invitations" onsubmit="return confirm('This invitation will be deleted.')" method="delete" action="{{ route('invitations.destroy', $invitation) }}">
+                                        <x-form x-target="invitations" :confirm="__('This invitation will be deleted.')" method="delete" action="{{ route('teams.invitations.destroy', $invitation) }}">
                                             <x-popover.item before="phosphor-trash">Delete</x-popover.item>
                                         </x-form>
                                     </x-popover>
@@ -89,5 +89,5 @@
                 <x-text>{{ __('No pending invitations found.') }}</x-text>
             </x-card>
         @endif
-    </x-section>
+    </x-panel>
 </x-layouts.app>

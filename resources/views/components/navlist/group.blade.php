@@ -1,3 +1,5 @@
+@blaze
+
 @props([
     'expandable' => false,
     'expanded' => true,
@@ -7,12 +9,12 @@
 <?php if ($expandable && $heading): ?>
 
 <details {{ $attributes->class('group/disclosure grid') }} {{ $expanded ? 'open' : '' }}>
-    <summary class="mb-[2px] flex h-10 w-full items-center rounded-lg text-gray-500 cursor-default hover:bg-gray-800/5 hover:text-gray-800 lg:h-8 dark:text-white/80 dark:hover:bg-white/7 dark:hover:text-white">
+    <summary class="mb-[2px] flex h-10 w-full items-center rounded-lg text-gray-500 cursor-default truncate hover:bg-gray-800/5 hover:text-gray-800 lg:h-8 dark:text-white/80 dark:hover:bg-white/7 dark:hover:text-white">
         <div class="pl-3 pr-4">
             <x-phosphor-caret-down aria-hidden="true" width="12" height="12" class="hidden group-open/disclosure:block" />
             <x-phosphor-caret-right aria-hidden="true" width="12" height="12" class="block group-open/disclosure:hidden" />
         </div>
-        <span class="text-sm font-medium leading-none">{{ $heading }}</span>
+        <span class="text-sm font-medium truncate">{{ $heading }}</span>
     </summary>
     <div class="relative space-y-[2px] pl-7">
         <div class="absolute inset-y-[3px] left-0 ml-4 w-px bg-gray-200 dark:bg-white/30"></div>

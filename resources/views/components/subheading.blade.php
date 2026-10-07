@@ -1,3 +1,5 @@
+@blaze(fold: true)
+
 @props([
     'size' => null,
 ])
@@ -9,7 +11,7 @@
         default => 'text-sm',
         'sm' => 'text-xs',
     },
-    '[:where(&)]:text-gray-500 [:where(&)]:dark:text-white/70',
+    '[:where(&)]:text-gray-500 dark:[:where(&)]:text-gray-400',
 ]) }} data-subheading>
     {{ $slot }}
 </div>

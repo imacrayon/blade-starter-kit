@@ -1,21 +1,26 @@
+@blaze
+
 @props([
-  'for',
-  'value' => null,
-  'bag' => 'default',
+    'for',
+    'value' => null,
+    'bag' => 'default',
 ])
 
-<?php $for = \App\View\Components\Control::sessionPath($for); ?>
+@php
+$field = \App\Field::for($for, bag: $bag);
+$message = $field->error();
+@endphp
 
-@error($for, $bag)
-  <div {{ $attributes->class([
-    'text-sm font-medium text-red-600 dark:text-red-400'
-  ])->merge([
-    'id' => $for.'_error',
-  ]) }}>
-    @if ($slot->isEmpty())
-      {{ $value ?? $message }}
-    @else
-      {{ $slot }}
-    @endif
-  </div>
-@enderror
+@if ($message !== null)
+    <div {{ $attributes->class([
+        'text-sm font-medium text-red-600 dark:text-red-400'
+    ])->merge([
+        'id' => $field->errorId(),
+    ]) }}>
+        @if ($slot->isEmpty())
+            {{ $value ?? $message }}
+        @else
+            {{ $slot }}
+        @endif
+    </div>
+@endif

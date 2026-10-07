@@ -1,7 +1,18 @@
-@props(['method' => 'get', 'action' => '', 'upload' => false])
+@blaze
 
-<form method="{{ $method !== 'get' ? 'post' : 'get' }}" action="{{ $action }}" {{ $attributes->merge(['enctype' => $upload ? 'multipart/form-data' : null]) }}>
-    <input hidden type="hidden" name="_token" value="{{ csrf_token() }}" autocomplete="off">
-    <input hidden type="hidden" name="_method" value="{{ $method }}">
+@props(['method', 'action', 'hasFiles' => false, 'confirm' => null])
+
+@php $method = strtolower($method); @endphp
+
+<form method="{{ $method === 'get' ? 'get' : 'post' }}" action="{{ $action }}" {{ $attributes->merge([
+    'enctype' => $hasFiles ? 'multipart/form-data' : null,
+    'onsubmit' => $confirm ? 'return confirm('.Js::from($confirm).')' : null,
+]) }}>
+    @if ($method !== 'get')
+        @csrf
+    @endif
+    @if (! in_array($method, ['get', 'post']))
+        @method($method)
+    @endif
     {{ $slot }}
 </form>

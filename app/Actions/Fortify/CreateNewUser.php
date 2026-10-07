@@ -17,15 +17,19 @@ class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules, ProfileValidationRules;
 
+    /** @param  array<string, string>  $input */
     public function create(array $input): User
     {
         Validator::make($input, [
             ...$this->profileRules(),
             'password' => $this->passwordRules(),
-            'code' => ['nullable', 'string', 'exists:invitations,code'],
         ])->validate();
 
-        $invitation = isset($input['code']) ? Invitation::where('code', $input['code'])->first() : null;
+        $invitation = Invitation::findPendingByCode($input['code'] ?? null);
+
+        if (! $invitation && filled($input['code'] ?? null)) {
+            session()->put('invitation_invalid', true);
+        }
 
         return DB::transaction(function () use ($input, $invitation) {
             $user = User::create([

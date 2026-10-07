@@ -1,12 +1,13 @@
 <x-layouts.app :title="__('Users')">
     <x-headbar :title="__('Users')" />
-    <x-section class="mt-6">
+    <x-panel class="mt-6">
     <form x-target.replace="users" x-on:input.debounce="$el.requestSubmit()" class="flex gap-3">
         <x-label for="q" :value="__('Search')" class="sr-only" />
         <x-input name="q" placeholder="Search by name or email" autocomplete="off" />
         <x-button x-show="false">Submit</x-button>
     </form>
     <div id="users">
+        <x-error for="team" class="mt-3" />
         @if($users->isNotEmpty())
             <x-table>
                 <x-slot:head>
@@ -58,7 +59,7 @@
                                                 </x-popover.item>
                                             </x-form>
                                         @endif
-                                        <x-form class="contents" x-target="users" onsubmit="return confirm('This user will be deleted.')" method="delete" action="{{ route('admin.users.destroy', $user) }}">
+                                        <x-form class="contents" x-target="users" :confirm="__('This user will be deleted.')" method="delete" action="{{ route('admin.users.destroy', $user) }}">
                                             <x-popover.item before="phosphor-trash">
                                                 {{ __('Delete') }}
                                             </x-popover.item>
@@ -73,5 +74,5 @@
         @endif
         <x-pagination class="mt-1" :paginator="$users" />
     </div>
-</x-section>
+</x-panel>
 </x-layouts.app>

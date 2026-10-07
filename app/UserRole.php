@@ -7,7 +7,7 @@ enum UserRole: string
     case ADMIN = 'admin';
     case MEMBER = 'member';
 
-    public function label()
+    public function label(): string
     {
         return match ($this) {
             self::ADMIN => __('Admin'),
@@ -15,7 +15,7 @@ enum UserRole: string
         };
     }
 
-    public function description()
+    public function description(): string
     {
         return match ($this) {
             self::ADMIN => __('Can view, add, and edit team members.'),

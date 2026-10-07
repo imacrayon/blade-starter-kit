@@ -1,10 +1,17 @@
+@blaze
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
         @include('partials.head')
     </head>
-    <body class="flex flex-col min-h-screen bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-        <header class="z-10 border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900">
+    <body class="flex flex-col min-h-screen bg-white dark:bg-gray-950 text-gray-700 dark:text-gray-400">
+        <?php
+            $authTeams = Auth::user()->teams;
+            $authTeam = Request::route('team') ?? Auth::user()->team;
+        ?>
+        @include('partials.notifications')
+        <header class="z-10 border-b border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-white/2">
             <x-container class="flex items-center max-lg:py-3">
                 <x-button type="button" command="show-modal" commandfor="mobile_nav" icon size="xs" before="phosphor-list" class="lg:hidden me-3">
                     <span class="sr-only">{{ __('Toggle navigation') }}</span>
@@ -18,18 +25,18 @@
                 <x-navbar class="max-lg:hidden">
                     <button type="button" commandfor="header_team_menu" command="toggle-popover" class="flex items-center ps-3 ms-3 h-10 w-full rounded-lg text-gray-500 cursor-default hover:bg-gray-800/5 hover:text-gray-800 lg:h-8 dark:text-white/80 dark:hover:bg-white/7 dark:hover:text-white">
                         <span class="text-sm font-medium leading-none">
-                            {{ auth()->user()->team->name }}
+                            {{ $authTeam->name }}
                         </span>
                         <span class="shrink-0 ml-auto size-8 flex justify-center items-center">
                             <x-phosphor-caret-up-down aria-hidden="true" width="12" height="12" class="text-gray-400 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white" />
                         </span>
                     </button>
                     <x-popover id="header_team_menu" justify="left" class="w-max">
-                        <x-form method="put" action="{{ route('settings.team.update') }}" class="grid grid-cols-[auto_1fr]">
-                            @foreach(auth()->user()->teams as $team)
-                                <x-popover.item class="col-span-2 grid grid-cols-subgrid" :before="$team->id === auth()->user()->team_id ? 'phosphor-check' : ''" name="team_id" value="{{ $team->id }}">{{ $team->name }}</x-popover.item>
-                            @endforeach
-                        </x-form>
+                        @foreach($authTeams as $team)
+                            <x-form method="put" action="{{ route('teams.current.update', $team) }}" class="w-full flex">
+                                <x-popover.item :before="$team->id === $authTeam->id ? 'phosphor-check' : ''">{{ $team->name }}</x-popover.item>
+                            </x-form>
+                        @endforeach
                         <x-popover.separator />
                         <x-popover.item before="phosphor-plus" href="{{ route('teams.create') }}">
                             {{ __('New Team') }}
@@ -59,12 +66,12 @@
             <x-container class="flex items-center max-lg:hidden">
                 <x-navbar>
                     <x-navbar.item href="{{ route('app') }}">
-                        {{ __('Dashboard') }}
+                        {{ __('Home') }}
                     </x-navbar.item>
-                    <x-navbar.item href="{{ route('teams.show', auth()->user()->team) }}">
+                    <x-navbar.item href="{{ route('teams.members.index', $authTeam) }}">
                         {{ __('Members') }}
                     </x-navbar.item>
-                    <x-navbar.item href="{{ route('teams.edit', auth()->user()->team) }}">
+                    <x-navbar.item href="{{ route('teams.edit', $authTeam) }}">
                         {{ __('Settings') }}
                     </x-navbar.item>
                 </x-navbar>
@@ -77,30 +84,30 @@
                         <x-navlist.group>
                             <button type="button" commandfor="header_mobile_team_menu" command="toggle-popover" class="flex pl-3 h-10 w-full items-center rounded-lg text-gray-500 cursor-default hover:bg-gray-800/5 hover:text-gray-800 lg:h-8 dark:text-white/80 dark:hover:bg-white/7 dark:hover:text-white">
                                 <span class="text-sm font-medium leading-none">
-                                    {{ auth()->user()->team->name }}
+                                    {{ $authTeam->name }}
                                 </span>
                                 <span class="shrink-0 ml-auto size-8 flex justify-center items-center">
                                     <x-phosphor-caret-up-down aria-hidden="true" width="12" height="12" class="text-gray-400 dark:text-white/80 group-hover:text-gray-800 dark:group-hover:text-white" />
                                 </span>
                             </button>
                             <x-popover id="header_mobile_team_menu" justify="left" class="w-max">
-                                <x-form method="put" action="{{ route('settings.team.update') }}" class="grid grid-cols-[auto_1fr]">
-                                    @foreach(auth()->user()->teams as $team)
-                                        <x-popover.item class="col-span-2 grid grid-cols-subgrid" :before="$team->id === auth()->user()->team_id ? 'phosphor-check' : ''" name="team_id" value="{{ $team->id }}">{{ $team->name }}</x-popover.item>
-                                    @endforeach
-                                </x-form>
+                                @foreach($authTeams as $team)
+                                    <x-form method="put" action="{{ route('teams.current.update', $team) }}" class="w-full flex">
+                                        <x-popover.item :before="$team->id === $authTeam->id ? 'phosphor-check' : ''">{{ $team->name }}</x-popover.item>
+                                    </x-form>
+                                @endforeach
                                 <x-popover.separator />
                                 <x-popover.item before="phosphor-plus" href="{{ route('teams.create') }}">
                                     {{ __('New Team') }}
                                 </x-popover.item>
                             </x-popover>
                             <x-navlist.item before="phosphor-file-text" href="{{ route('app') }}">
-                                {{ __('Dashboard') }}
+                                {{ __('Home') }}
                             </x-navlist.item>
-                            <x-navlist.item before="phosphor-user-list" href="{{ route('teams.show', auth()->user()->team) }}">
+                            <x-navlist.item before="phosphor-user-list" href="{{ route('teams.members.index', $authTeam) }}">
                                 {{ __('Members') }}
                             </x-navlist.item>
-                            <x-navlist.item before="phosphor-gear-fine" href="{{ route('teams.edit', auth()->user()->team) }}">
+                            <x-navlist.item before="phosphor-gear-fine" href="{{ route('teams.edit', $authTeam) }}">
                                 {{ __('Settings') }}
                             </x-navlist.item>
                         </x-navlist.group>
@@ -120,7 +127,7 @@
             </x-modal>
         </header>
         <main class="flex-1 flex flex-col">
-            <x-container class="flex-1 flex flex-col py-6 lg:py-8">
+            <x-container class="flex-1 flex flex-col py-6">
                 {{ $slot }}
             </x-container>
         </main>

@@ -16,3 +16,6 @@ indent_size = 2
 
 [docker-compose.yml]
 indent_size = 4
+
+[resources/views/components/{button/index,link,badge,time}.blade.php]
+insert_final_newline = false

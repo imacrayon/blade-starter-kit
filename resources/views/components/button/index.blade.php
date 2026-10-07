@@ -1,5 +1,7 @@
+@blaze(fold: true, unsafe: ['attributes', 'before', 'after'])
+{{-- No trailing newline: it would render as whitespace after this inline element. --}}
+
 @props([
-    'href' => '',
     'variant' => 'secondary',
     'size' => 'base',
     'icon' => false,
@@ -9,20 +11,25 @@
 ])
 
 @php
+if ($attributes->has('href')) {
+    $as = 'a';
+}
+
 $classes = [
-    'inline-flex items-center justify-center gap-2 outline-offset-1',
+    'inline-flex items-center justify-center outline-offset-1',
     'relative aria-pressed:z-10', // Button group behavior
     'font-medium whitespace-nowrap',
     'disabled:opacity-75 dark:disabled:opacity-75 disabled:cursor-default disabled:pointer-events-none',
     match ($size) { // Size...
-        'base' => 'h-10 text-sm rounded-lg [:where(&)]:px-4',
-        'sm' => 'h-8 text-sm rounded-md [:where(&)]:px-3',
-        'xs' => 'h-6 text-xs rounded-md [:where(&)]:px-2',
+        'lg' => 'h-12 text-base rounded-lg [:where(&)]:px-5 gap-2',
+        'base' => 'h-10 text-sm rounded-lg [:where(&)]:px-4 gap-2',
+        'sm' => 'h-8 text-sm rounded-md [:where(&)]:px-3 gap-1.5',
+        'xs' => 'h-6 text-xs rounded-md [:where(&)]:px-2 gap-1',
     },
     $icon ? 'p-0 aspect-square' : '',
     match ($variant) { // Background color...
         'primary' => 'bg-[var(--color-accent)] hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)]',
-        'secondary' => 'bg-white hover:bg-gray-50 dark:bg-white/5 dark:hover:bg-white/10 aria-pressed:bg-[var(--color-accent)] aria-pressed:hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)]',
+        'secondary' => 'bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 aria-pressed:bg-[var(--color-accent)] aria-pressed:hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)]',
         'danger' => 'bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500',
         default => '',
     },
@@ -35,13 +42,14 @@ $classes = [
     },
     match ($variant) { // Border color...
         'primary' => 'border border-black/10 dark:border-0',
-        'secondary' => 'border border-gray-200 hover:border-gray-200 border-b-gray-300/80 dark:border-white/10 dark:hover:border-white/15 aria-pressed:border-black/10 dark:aria-pressed:border-0',
+        'secondary' => 'border border-gray-200 hover:border-gray-200 border-b-gray-300/80 dark:border-gray-800 dark:hover:border-white/15 aria-pressed:border-black/10 dark:aria-pressed:border-0',
         'danger' => 'border border-black/10 dark:border-0',
          default => '',
     },
     match ($variant) { // Shadows...
         'primary' => 'shadow-[inset_0px_1px_--theme(--color-white/.4)]',
         'secondary' => match ($size) {
+            'lg' => 'shadow-xs',
             'base' => 'shadow-xs',
             'sm' => 'shadow-xs',
             'xs' => 'shadow-none',
@@ -60,15 +68,14 @@ $afterClasses = $icon
     : 'shrink-0 opacity-80 group-hover:opacity-90 -mr-0.5';
 
 $iconSize = match($size) {
+    'lg' => '20',
     'base' => '20',
     'sm' => '20',
     'xs' => '16',
 };
 @endphp
 
-{{-- It's important that this file does NOT have a newline at the end. --}}
-<?php if ($href): ?>
-  <a href="{{ $href }}" {{ $attributes->class($classes) }}>
+<{{ $as }} {{ $attributes->class($classes) }}>
     <?php if (is_string($before) && $before !== ''): ?>
         <x-dynamic-component :component="$before" aria-hidden="true" :width="$iconSize" :height="$iconSize" :class="$beforeClasses" />
     <?php else: ?>
@@ -80,19 +87,4 @@ $iconSize = match($size) {
     <?php else: ?>
         {{ $after }}
     <?php endif; ?>
-  </a>
-<?php else: ?>
-  <{{ $as }} {{ $attributes->class($classes) }}>
-    <?php if (is_string($before) && $before !== ''): ?>
-        <x-dynamic-component :component="$before" aria-hidden="true" :width="$iconSize" :height="$iconSize" :class="$beforeClasses" />
-    <?php else: ?>
-        {{ $before }}
-    <?php endif; ?>
-    {{ $slot }}
-    <?php if (is_string($after) && $after !== ''): ?>
-        <x-dynamic-component :component="$after" aria-hidden="true" :width="$iconSize" :height="$iconSize" :class="$afterClasses" />
-    <?php else: ?>
-        {{ $after }}
-    <?php endif; ?>
-  </{{ $as }}>
-<?php endif; ?>
+</{{ $as }}>

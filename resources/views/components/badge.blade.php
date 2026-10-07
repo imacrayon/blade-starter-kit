@@ -1,3 +1,6 @@
+@blaze(fold: true)
+{{-- No trailing newline: it would render as whitespace after this inline element. --}}
+
 @props(['color' => 'gray', 'size' => null])
 
 @php
@@ -31,4 +34,4 @@ $classes = [
 ];
 @endphp
 
-<span {{ $attributes->class($classes) }} data-flux-navlist-badge>{{ $slot }}</span>
+<span {{ $attributes->class($classes) }} data-badge>{{ $slot }}</span>

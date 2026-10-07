@@ -6,6 +6,7 @@ This is an opinionated starter kit for building multi-tenant Laravel application
 - **Admin panel** — manage users and teams with full-text search
 - **User impersonation** — sign in as any user from the admin panel
 - **Two-factor authentication** — TOTP-based 2FA powered by [Laravel Fortify](https://laravel.com/docs/fortify)
+- **Passkeys** — passwordless login with Face ID, Touch ID, Windows Hello, or a security key, powered by [Laravel Fortify](https://laravel.com/docs/fortify)
 
 The UI is composed of beautiful Blade components powered by [Alpine.js](https://alpinejs.dev) and [Tailwind CSS](https://tailwindcss.com), with partial page updates via [Alpine AJAX](https://alpine-ajax.js.org) and route pre-fetching via [instant.page](https://instant.page).
 

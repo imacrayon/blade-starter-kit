@@ -1,6 +1,19 @@
-{{-- It's important that this file does NOT have a newline at the end. --}}
-<a {{ $attributes->class([
+@blaze
+{{-- No trailing newline: it would render as whitespace after this inline element. --}}
+
+@props([
+    'variant' => 'secondary',
+])
+
+<?php
+$classes = [
     'inline font-medium underline',
-    'text-(--color-accent-content) decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_30%)]',
     'hover:decoration-current',
-]) }}>{{ $slot }}</a>
+    match ($variant) { // Background color...
+        'primary' => 'text-blue-700 decoration-[color-mix(in_oklab,var(--color-blue-700),transparent_30%)]',
+        default => 'text-gray-600 decoration-gray-300',
+    },
+];
+?>
+
+<a {{ $attributes->class($classes) }}>{{ $slot }}</a>

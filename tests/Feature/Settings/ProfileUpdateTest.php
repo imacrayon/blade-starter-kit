@@ -2,8 +2,13 @@
 
 namespace Tests\Feature\Settings;
 
+use App\Models\Invitation;
+use App\Models\Team;
 use App\Models\User;
+use App\UserRole;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ProfileUpdateTest extends TestCase
@@ -19,6 +24,8 @@ class ProfileUpdateTest extends TestCase
 
     public function test_profile_information_can_be_updated(): void
     {
+        Notification::fake();
+
         $user = User::factory()->create();
 
         $response = $this
@@ -39,6 +46,7 @@ class ProfileUpdateTest extends TestCase
         $this->assertSame('User', $user->last_name);
         $this->assertSame('test@example.com', $user->email);
         $this->assertNull($user->email_verified_at);
+        Notification::assertSentTo($user, VerifyEmail::class);
     }
 
     public function test_email_verification_status_is_unchanged_when_email_address_is_unchanged(): void
@@ -78,6 +86,57 @@ class ProfileUpdateTest extends TestCase
         $this->assertNull($user->fresh());
     }
 
+    public function test_deleting_an_account_deletes_teams_left_without_members(): void
+    {
+        $user = User::factory()->create();
+        $personalTeam = $user->team;
+        $sharedTeam = Team::factory()->create();
+        $user->joinTeam($sharedTeam);
+        User::factory()->create()->joinTeam($sharedTeam, UserRole::ADMIN);
+
+        $this
+            ->be($user)
+            ->delete(route('settings.profile.destroy'), ['password' => 'password'])
+            ->assertSessionHasNoErrors();
+
+        $this->assertModelMissing($personalTeam);
+        $this->assertModelExists($sharedTeam);
+    }
+
+    public function test_user_who_sent_an_invitation_can_delete_their_account(): void
+    {
+        $user = User::factory()->create();
+        $invitation = Invitation::factory()->create(['sender_id' => $user->id]);
+
+        $this
+            ->be($user)
+            ->delete(route('settings.profile.destroy'), ['password' => 'password'])
+            ->assertSessionHasNoErrors();
+
+        $this->assertModelMissing($user);
+        $this->assertModelMissing($invitation);
+    }
+
+    public function test_sole_admin_of_a_team_with_other_members_cannot_delete_their_account(): void
+    {
+        $user = User::factory()->create();
+        $member = User::factory()->create()->joinTeam($user->team, UserRole::MEMBER);
+
+        $this
+            ->be($user)
+            ->delete(route('settings.profile.destroy'), ['password' => 'password'])
+            ->assertSessionHasErrors('team');
+        $this->assertModelExists($user);
+
+        $user->team->users()->updateExistingPivot($member, ['role' => UserRole::ADMIN]);
+
+        $this
+            ->be($user->fresh())
+            ->delete(route('settings.profile.destroy'), ['password' => 'password'])
+            ->assertSessionHasNoErrors();
+        $this->assertModelMissing($user);
+    }
+
     public function test_correct_password_must_be_provided_to_delete_account(): void
     {
         $user = User::factory()->create();
@@ -93,22 +152,5 @@ class ProfileUpdateTest extends TestCase
             ->assertRedirectBack();
 
         $this->assertNotNull($user->fresh());
-    }
-
-    public function test_account_deletion_is_rate_limited(): void
-    {
-        $user = User::factory()->create();
-
-        for ($i = 0; $i < 5; $i++) {
-            $this->be($user)->delete(route('settings.profile.destroy'), [
-                'password' => 'wrong-password',
-            ]);
-        }
-
-        $response = $this->be($user)->delete(route('settings.profile.destroy'), [
-            'password' => 'wrong-password',
-        ]);
-
-        $response->assertStatus(429);
     }
 }

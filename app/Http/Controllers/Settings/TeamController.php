@@ -6,16 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TeamController extends Controller
 {
-    public function update(Request $request): RedirectResponse
+    public function index(Request $request): View
     {
-        $team = Team::findOrFail($request->team_id);
-        abort_unless($request->user()->belongsToTeam($team), '403');
+        return view('settings.teams', [
+            'user' => $request->user(),
+            'teams' => $request->user()->load(['teams' => fn ($query) => $query->withCount(Team::memberCounts())])->teams,
+        ]);
+    }
 
-        $request->user()->update(['team_id' => $team->id]);
+    public function destroy(Request $request, Team $team): RedirectResponse
+    {
+        $request->user()->leaveTeam($team);
 
-        return to_route('teams.show', $team);
+        return to_route('settings.teams.index');
     }
 }

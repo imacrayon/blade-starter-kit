@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
+use App\Models\Invitation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -13,18 +14,26 @@ use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        //
-    }
-
     public function boot(): void
     {
-        Fortify::loginView(fn () => view('auth.login'));
+        Fortify::loginView(function (Request $request) {
+            // Return to the join page after logging in. Registering accepts the invitation instead.
+            if ($invitation = Invitation::findPendingByCode($request->query('code'))) {
+                redirect()->setIntendedUrl(route('teams.members.create', $invitation));
+            }
+
+            return view('auth.login', ['invitation' => $invitation]);
+        });
         Fortify::verifyEmailView(fn () => view('auth.verify-email'));
         Fortify::twoFactorChallengeView(fn () => view('auth.two-factor-challenge'));
         Fortify::confirmPasswordView(fn () => view('auth.confirm-password'));
-        Fortify::registerView(fn () => view('auth.register'));
+        Fortify::registerView(function (Request $request) {
+            if ($invitation = Invitation::findPendingByCode($request->query('code'))) {
+                $request->session()->forget('url.intended');
+            }
+
+            return view('auth.register', ['invitation' => $invitation]);
+        });
         Fortify::resetPasswordView(fn () => view('auth.reset-password'));
         Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
 
@@ -41,8 +50,9 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-        RateLimiter::for('password-settings', function (Request $request) {
-            return Limit::perMinute(5)->by($request->user()->id);
-        });
+        RateLimiter::for('passkeys', fn (Request $request) => [
+            Limit::perMinute(10)->by('session:'.$request->session()->getId()),
+            Limit::perMinute(120)->by('ip:'.$request->ip()),
+        ]);
     }
 }

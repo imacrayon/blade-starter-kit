@@ -1,3 +1,5 @@
+@blaze
+
 @props(['paginator'])
 
 <div {{ $attributes }}>

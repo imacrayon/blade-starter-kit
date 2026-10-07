@@ -1,22 +1,35 @@
+@blaze
+
+@props([
+    'name' => null,
+    'id' => null,
+    'value' => '1',
+    'label' => '',
+    'description' => '',
+    'bag' => 'default',
+    'checked' => false,
+])
+
 @php
+$field = \App\Field::for($name, $id, $bag);
 $classes = [
     'col-start-1 row-start-1 appearance-none forced-colors:appearance-auto',
     'shrink-0 size-5 rounded-md',
     'text-sm text-gray-700 dark:text-gray-800',
     'shadow-xs disabled:opacity-75 disabled:checked:opacity-50 disabled:shadow-none checked:shadow-none indeterminate:shadow-none',
-    'border border-gray-300 dark:border-white/10 outline-offset-1',
+    'border border-gray-300 dark:border-gray-800 outline-offset-1',
     'disabled:border-gray-200 dark:disabled:border-white/5',
     'checked:border-transparent indeterminate:border-transparent',
     'disabled:checked:border-transparent disabled:indeterminate:border-transparent',
-    'bg-white dark:bg-white/5',
+    'bg-white dark:bg-gray-900',
     'checked:bg-(--color-accent)',
     'aria-invalid:border-red-500',
 ];
 @endphp
 
-<x-has-inline-field>
+<x-has-inline-field :id="$field->id" :label="$label" :description="$description">
     <div class="shrink-0 group grid size-5 grid-cols-1">
-        <input type="checkbox" {{ $controlAttributes }} value="{{ $value }}" {{ $attributes->class($classes) }}>
+        <input type="checkbox" value="{{ $value }}" @checked($checked) {{ $field->attributes($attributes, $description)->class($classes) }}>
         <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center text-(--color-accent-foreground) stroke-current" viewBox="0 0 14 14" fill="none">
             <path class="opacity-0 group-has-checked:opacity-100" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
             <path class="opacity-0 group-has-indeterminate:opacity-100" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>

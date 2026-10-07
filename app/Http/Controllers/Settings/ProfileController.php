@@ -34,6 +34,10 @@ class ProfileController extends Controller
 
         $user->save();
 
+        if ($user->wasChanged('email')) {
+            $user->sendEmailVerificationNotification();
+        }
+
         return to_route('settings.profile.edit')->with('status', 'profile-updated');
     }
 
@@ -44,10 +48,10 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        $user->ensureDeletable();
 
         Auth::logout();
 
-        $user->teams()->detach();
         $user->delete();
 
         $request->session()->invalidate();
